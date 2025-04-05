@@ -1,9 +1,10 @@
-import 'package:auth/register.dart';
+// import 'package:auth/register.dart';
 import 'package:flutter/material.dart';
-import 'package:auth/main.dart';
+// import 'package:auth/main.dart';
+import 'package:project_kel2_mfe/feat/register.dart';
+import 'package:project_kel2_mfe/main.dart';
 
 class LoginPage extends StatefulWidget {
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -34,9 +35,8 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(
                   fontSize: 13,
                   color: Colors.black,
-                  fontFamily: "Poppins"
+                  fontFamily: "Poppins",
                 ),
-              
               ),
               SizedBox(height: 20),
               SizedBox(
@@ -92,7 +92,10 @@ class _LoginPageState extends State<LoginPage> {
                 width: 290,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>  MyHomePage(title: 'Study English',)));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyApp()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -206,7 +209,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(height: 60),
-              Row(mainAxisAlignment: MainAxisAlignment.center,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     'belum punya akun? ',
@@ -215,15 +219,16 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.w600,
                       fontFamily: "Poppins",
                       color: Colors.black,
-                    ),  
+                    ),
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> RegisterPage()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterPage()),
+                      );
                     },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.all(0),
-                    ),
+                    style: TextButton.styleFrom(padding: EdgeInsets.all(0)),
                     child: Text(
                       'Daftar Sekarang',
                       style: TextStyle(
@@ -233,10 +238,9 @@ class _LoginPageState extends State<LoginPage> {
                         fontSize: 14,
                       ),
                     ),
-                  )
-                  
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
