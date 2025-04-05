@@ -1,9 +1,8 @@
 import 'package:auth/register.dart';
 import 'package:flutter/material.dart';
+import 'package:auth/main.dart';
 
 class LoginPage extends StatefulWidget {
-  final List<Map<String, String>> userList;
-  const LoginPage({super.key, required this.userList});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -11,9 +10,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +43,6 @@ class _LoginPageState extends State<LoginPage> {
                 width: 290,
                 height: 40,
                 child: TextFormField(
-                  controller: _emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
                     enabledBorder: OutlineInputBorder(
@@ -66,7 +61,6 @@ class _LoginPageState extends State<LoginPage> {
                 width: 290,
                 height: 40,
                 child: TextFormField(
-                  controller: _passwordController,
                   obscureText: _obscureText,
                   decoration: InputDecoration(
                     labelText: 'Kata Sandi',
@@ -98,29 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: 290,
                 child: ElevatedButton(
                   onPressed: () {
-                    String email = _emailController.text;
-                    String password = _passwordController.text;
-
-                    bool userFound = false;
-                    bool userPass = false;
-
-                    for (var user in widget.userList) {
-                      if (user['email'] == email) {
-                        userFound = true;
-                        if(user['password']==password){
-                          userPass = true;
-                          break;
-                        }
-                        break;
-                      }
-                    }
-                    if (userFound && userPass) {
-                      print('Anda Berhasil Masuk');
-                    } else if (userFound && !userPass) {
-                      print('Password anda salah');
-                    } else {
-                      print('akun anda tidak ditemukan');
-                    }
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>  MyHomePage(title: 'Study English',)));
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
