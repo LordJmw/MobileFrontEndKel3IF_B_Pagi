@@ -72,6 +72,7 @@ flutter:
   assets:
     - assets/icons8-john-wick-64.png
     - assets/images/kelinci.png
+    - assets/images/google.png
     - assets/grammar.jpg
     - assets/reading.jpg
     - assets/practice.jpg
