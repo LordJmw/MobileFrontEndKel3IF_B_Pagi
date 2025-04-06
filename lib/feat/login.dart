@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 // import 'package:auth/main.dart';
 import 'package:project_kel2_mfe/feat/register.dart';
+import 'package:project_kel2_mfe/homePage.dart';
 import 'package:project_kel2_mfe/main.dart';
 
 class LoginPage extends StatefulWidget {
@@ -106,12 +107,22 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: const Text(
-                    'MASUK',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomePage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'MASUK',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
