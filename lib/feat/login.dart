@@ -175,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'assets/images/google.png',
+                        "assets/images/googleIcon.jpg",
                         height: 20,
                         width: 20,
                       ),
