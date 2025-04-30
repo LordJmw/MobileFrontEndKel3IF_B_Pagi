@@ -1,5 +1,276 @@
 import 'package:flutter/material.dart';
 
+class TileState extends ChangeNotifier {
+  final Map<String, String> sampleQuestion = {
+    "kucing": "cat",
+    "sedikit": "a little",
+    "berangin": "windy",
+    "sweter": "sweater",
+    "mendung": "cloudy",
+  };
+  Set<String> completedQuestion = {};
+  Set<String> correctSet = {};
+  Set<String> checkedSet = {};
+  bool tapState = true;
+  String selectedQuestion = "";
+  String selectedAnswer = "";
+
+  void changeSelected(value, isQuestion) {
+    if (isQuestion) {
+      selectedQuestion = value;
+    } else {
+      selectedAnswer = value;
+    }
+    notifyListeners();
+  }
+
+  void checkAnswer() {
+    bool isCorrect = sampleQuestion[selectedQuestion] == selectedAnswer;
+
+    if (isCorrect) {
+      correctSet.add(selectedQuestion);
+      correctSet.add(selectedAnswer);
+    }
+    checkedSet.add(selectedQuestion);
+    checkedSet.add(selectedAnswer);
+    tapState = !tapState;
+
+    notifyListeners();
+
+    Future.delayed(Duration(milliseconds: 500), () {
+      correctSet = {};
+      checkedSet = {};
+      tapState = !tapState;
+
+      if (isCorrect) {
+        completedQuestion.add(selectedQuestion);
+        completedQuestion.add(selectedAnswer);
+      }
+      selectedQuestion = "";
+      selectedAnswer = "";
+
+      // if (completedQuestion.length == sampleQuestion.length * 2) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       backgroundColor: Color.fromRGBO(221, 243, 254, 1),
+      //       duration: Duration(days: 1),
+      //       content: Column(
+      //         children: [
+      //           Padding(
+      //             padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
+      //             child: ListTile(
+      //               contentPadding: EdgeInsets.zero,
+      //               leading: CircleAvatar(
+      //                 backgroundColor: Color.fromRGBO(28, 176, 246, 1),
+      //                 foregroundColor: Colors.white,
+      //                 radius: 15,
+      //                 child: Icon(Icons.check_rounded, size: 20),
+      //               ),
+      //               title: Text(
+      //                 "Hebat!",
+      //                 style: TextStyle(
+      //                   fontSize: 22,
+      //                   color: Color.fromRGBO(28, 176, 246, 1),
+      //                   fontFamily: "Jellee",
+      //                 ),
+      //               ),
+      //             ),
+      //           ),
+      //           // CheckButton(state: true),
+      //         ],
+      //       ),
+      //     ),
+      //   );
+      // }
+      notifyListeners();
+    });
+  }
+}
+
+class MatchingTiles extends StatefulWidget {
+  final TileState notifier;
+  final String tileValue;
+  final bool isQuestion;
+  const MatchingTiles({
+    super.key,
+    required this.notifier,
+    required this.tileValue,
+    required this.isQuestion,
+  });
+
+  @override
+  State<MatchingTiles> createState() => _MatchingTilesState();
+}
+
+class _MatchingTilesState extends State<MatchingTiles> {
+  late bool isSelected;
+  late bool isDisabled;
+  late bool isCorrect;
+  late bool isChecked;
+  late bool tapState;
+
+  @override
+  void initState() {
+    super.initState();
+    isSelected =
+        widget.tileValue == widget.notifier.selectedQuestion ||
+        widget.tileValue == widget.notifier.selectedAnswer;
+    isDisabled = widget.notifier.completedQuestion.contains(widget.tileValue);
+    isCorrect = widget.notifier.correctSet.contains(widget.tileValue);
+    isChecked = widget.notifier.checkedSet.contains(widget.tileValue);
+    tapState = widget.notifier.tapState;
+
+    widget.notifier.addListener(() {
+      setState(() {
+        isSelected =
+            widget.tileValue == widget.notifier.selectedQuestion ||
+            widget.tileValue == widget.notifier.selectedAnswer;
+        isDisabled = widget.notifier.completedQuestion.contains(
+          widget.tileValue,
+        );
+        isCorrect = widget.notifier.correctSet.contains(widget.tileValue);
+        isChecked = widget.notifier.checkedSet.contains(widget.tileValue);
+        tapState = widget.notifier.tapState;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+      child: SizedBox(
+        width: 210,
+        child: ListTile(
+          contentPadding: EdgeInsets.fromLTRB(8, 10, 8, 10),
+          trailing:
+              widget.isQuestion
+                  ? RadioButton(
+                    widget: widget,
+                    isDisabled: isDisabled,
+                    isChecked: isChecked,
+                    isCorrect: isCorrect,
+                    tapState: tapState,
+                  )
+                  : null,
+          leading:
+              !widget.isQuestion
+                  ? RadioButton(
+                    widget: widget,
+                    isDisabled: isDisabled,
+                    isChecked: isChecked,
+                    isCorrect: isCorrect,
+                    tapState: tapState,
+                  )
+                  : null,
+          enabled: !isDisabled,
+          selected: isSelected,
+          selectedTileColor:
+              isChecked
+                  ? isCorrect
+                      ? Color.fromRGBO(215, 255, 184, 1)
+                      : Color.fromRGBO(255, 223, 224, 1)
+                  : Color.fromRGBO(221, 243, 254, 1),
+          title: Text(
+            widget.tileValue,
+            textAlign: widget.isQuestion ? TextAlign.end : TextAlign.start,
+            style: TextStyle(
+              color:
+                  isDisabled
+                      ? Color.fromRGBO(229, 229, 229, .8)
+                      : isChecked
+                      ? isCorrect
+                          ? Color.fromRGBO(90, 169, 4, 1)
+                          : Color.fromRGBO(234, 43, 43, 1)
+                      : Colors.black,
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 2,
+              color:
+                  isSelected
+                      ? isChecked
+                          ? isCorrect
+                              ? Color.fromRGBO(165, 237, 110, 1)
+                              : Color.fromRGBO(255, 178, 178, 1)
+                          : Color.fromRGBO(28, 176, 246, 1)
+                      : Color.fromRGBO(229, 229, 229, 1),
+            ),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          onTap:
+              !tapState
+                  ? null
+                  : () {
+                    widget.notifier.changeSelected(
+                      widget.tileValue,
+                      widget.isQuestion,
+                    );
+
+                    if (widget.notifier.selectedQuestion != "" &&
+                        widget.notifier.selectedAnswer != "") {
+                      widget.notifier.checkAnswer();
+                    }
+                  },
+        ),
+      ),
+    );
+  }
+}
+
+class RadioButton extends StatelessWidget {
+  const RadioButton({
+    super.key,
+    required this.widget,
+    required this.isDisabled,
+    required this.isChecked,
+    required this.isCorrect,
+    required this.tapState,
+  });
+
+  final MatchingTiles widget;
+  final bool isDisabled;
+  final bool isChecked;
+  final bool isCorrect;
+  final bool tapState;
+
+  @override
+  Widget build(BuildContext context) {
+    return Radio<String>(
+      value: widget.tileValue,
+      groupValue:
+          widget.isQuestion
+              ? widget.notifier.selectedQuestion
+              : widget.notifier.selectedAnswer,
+      fillColor: WidgetStateColor.resolveWith((Set<WidgetState> states) {
+        if (states.contains(WidgetState.selected) && !isDisabled) {
+          if (!isChecked) {
+            return Color.fromRGBO(28, 176, 246, 1);
+          } else {
+            if (isCorrect) {
+              return Color.fromRGBO(165, 237, 110, 1);
+            } else {
+              return Color.fromRGBO(255, 178, 178, 1);
+            }
+          }
+        }
+        return Color.fromRGBO(229, 229, 229, 1);
+      }),
+      onChanged:
+          isDisabled || !tapState
+              ? null
+              : (value) {
+                widget.notifier.changeSelected(value, widget.isQuestion);
+                if (widget.notifier.selectedQuestion != "" &&
+                    widget.notifier.selectedAnswer != "") {
+                  widget.notifier.checkAnswer();
+                }
+              },
+    );
+  }
+}
+
 class MatchingQuestion extends StatefulWidget {
   const MatchingQuestion({super.key});
 
@@ -15,84 +286,15 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
     "sweter": "sweater",
     "mendung": "cloudy",
   };
-
+  final TileState notifier = TileState();
   List<String> shuffledQuestion = [];
   List<String> shuffledAnswer = [];
-  Set<String> completedQuestion = {};
-  Set<String> correctSet = {};
-  Set<String> checkedSet = {};
-  bool tapState = true;
-  String selectedQuestion = "";
-  String selectedAnswer = "";
 
   @override
   void initState() {
     super.initState();
     shuffledQuestion = sampleQuestion.keys.toList()..shuffle();
     shuffledAnswer = sampleQuestion.values.toList()..shuffle();
-  }
-
-  void checkAnswer() {
-    bool isCorrect = sampleQuestion[selectedQuestion] == selectedAnswer;
-
-    setState(() {
-      if (isCorrect) {
-        correctSet.add(selectedQuestion);
-        correctSet.add(selectedAnswer);
-      }
-      checkedSet.add(selectedQuestion);
-      checkedSet.add(selectedAnswer);
-      tapState = !tapState;
-    });
-
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        correctSet = {};
-        checkedSet = {};
-        tapState = !tapState;
-
-        if (isCorrect) {
-          completedQuestion.add(selectedQuestion);
-          completedQuestion.add(selectedAnswer);
-        }
-        selectedQuestion = "";
-        selectedAnswer = "";
-
-        if (completedQuestion.length == sampleQuestion.length * 2) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Color.fromRGBO(221, 243, 254, 1),
-              duration: Duration(days: 1),
-              content: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: CircleAvatar(
-                        backgroundColor: Color.fromRGBO(28, 176, 246, 1),
-                        foregroundColor: Colors.white,
-                        radius: 15,
-                        child: Icon(Icons.check_rounded, size: 20),
-                      ),
-                      title: Text(
-                        "Hebat!",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Color.fromRGBO(28, 176, 246, 1),
-                          fontFamily: "Jellee",
-                        ),
-                      ),
-                    ),
-                  ),
-                  // CheckButton(state: true),
-                ],
-              ),
-            ),
-          );
-        }
-      });
-    });
   }
 
   @override
@@ -126,353 +328,24 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                 ),
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
                 children: [
-                  Column(
-                    children: [
-                      for (var i = 0; i < sampleQuestion.length; i++)
-                        Builder(
-                          builder: (context) {
-                            bool isSelected =
-                                selectedQuestion == shuffledQuestion[i];
-                            bool isDisabled = completedQuestion.contains(
-                              shuffledQuestion[i],
-                            );
-                            bool isCorrect = correctSet.contains(
-                              shuffledQuestion[i],
-                            );
-                            bool isChecked = checkedSet.contains(
-                              shuffledQuestion[i],
-                            );
-
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-                              child: SizedBox(
-                                width: 210,
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.fromLTRB(
-                                    8,
-                                    10,
-                                    8,
-                                    10,
-                                  ),
-                                  trailing: Radio<String>(
-                                    value: shuffledQuestion[i],
-                                    groupValue: selectedQuestion,
-                                    fillColor: WidgetStateColor.resolveWith((
-                                      Set<WidgetState> states,
-                                    ) {
-                                      if (states.contains(
-                                            WidgetState.selected,
-                                          ) &&
-                                          !completedQuestion.contains(
-                                            shuffledQuestion[i],
-                                          )) {
-                                        if (!isChecked) {
-                                          return Color.fromRGBO(
-                                            28,
-                                            176,
-                                            246,
-                                            1,
-                                          );
-                                        } else {
-                                          if (isCorrect) {
-                                            return Color.fromRGBO(
-                                              165,
-                                              237,
-                                              110,
-                                              1,
-                                            );
-                                            // return Color.fromRGBO(215, 255, 184, 1)
-                                            // return Color.fromRGBO(90, 169, 4, 1)
-                                          } else {
-                                            return Color.fromRGBO(
-                                              255,
-                                              178,
-                                              178,
-                                              1,
-                                            );
-                                            // return Color.fromRGBO(255, 223, 224, 1);
-                                            // return Color.fromRGBO(234, 43, 43, 1);
-                                          }
-                                        }
-                                      }
-                                      return Color.fromRGBO(229, 229, 229, 1);
-                                    }),
-                                    onChanged:
-                                        isDisabled || !tapState
-                                            ? null
-                                            : (value) {
-                                              setState(() {
-                                                selectedQuestion = value!;
-                                                if (selectedQuestion != "" &&
-                                                    selectedAnswer != "") {
-                                                  checkAnswer();
-                                                }
-                                              });
-                                            },
-                                  ),
-                                  enabled: !isDisabled,
-                                  selected: isSelected,
-                                  selectedTileColor:
-                                      isChecked
-                                          ? isCorrect
-                                              ? Color.fromRGBO(215, 255, 184, 1)
-                                              : Color.fromRGBO(255, 223, 224, 1)
-                                          : Color.fromRGBO(221, 243, 254, 1),
-                                  title: Text(
-                                    shuffledQuestion[i],
-                                    textAlign: TextAlign.end,
-                                    style: TextStyle(
-                                      // fontWeight: FontWeight.w600,
-                                      color:
-                                          isDisabled
-                                              ? Color.fromRGBO(
-                                                229,
-                                                229,
-                                                229,
-                                                .8,
-                                              )
-                                              : isChecked
-                                              ? isCorrect
-                                                  ? Color.fromRGBO(
-                                                    90,
-                                                    169,
-                                                    4,
-                                                    1,
-                                                  )
-                                                  : Color.fromRGBO(
-                                                    234,
-                                                    43,
-                                                    43,
-                                                    1,
-                                                  )
-                                              : Colors.black,
-                                    ),
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      width: 2,
-                                      color:
-                                          isSelected
-                                              ? isChecked
-                                                  ? isCorrect
-                                                      ? Color.fromRGBO(
-                                                        165,
-                                                        237,
-                                                        110,
-                                                        1,
-                                                      )
-                                                      : Color.fromRGBO(
-                                                        255,
-                                                        178,
-                                                        178,
-                                                        1,
-                                                      )
-                                                  : Color.fromRGBO(
-                                                    28,
-                                                    176,
-                                                    246,
-                                                    1,
-                                                  )
-                                              : Color.fromRGBO(
-                                                229,
-                                                229,
-                                                229,
-                                                1,
-                                              ),
-                                    ),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  onTap: () {
-                                    !tapState
-                                        ? null
-                                        : setState(() {
-                                          selectedQuestion =
-                                              shuffledQuestion[i];
-                                          if (selectedQuestion != "" &&
-                                              selectedAnswer != "") {
-                                            checkAnswer();
-                                          }
-                                        });
-                                  },
-                                ),
-                              ),
-                            );
-                          },
+                  for (int i = 0; i < sampleQuestion.length; i++)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MatchingTiles(
+                          notifier: notifier,
+                          tileValue: shuffledQuestion[i],
+                          isQuestion: true,
                         ),
-                    ],
-                  ),
-
-                  Column(
-                    children: [
-                      for (var i = 0; i < sampleQuestion.length; i++)
-                        Builder(
-                          builder: (context) {
-                            bool isSelected =
-                                selectedAnswer == shuffledAnswer[i];
-                            bool isDisabled = completedQuestion.contains(
-                              shuffledAnswer[i],
-                            );
-                            bool isCorrect = correctSet.contains(
-                              shuffledAnswer[i],
-                            );
-                            bool isChecked = checkedSet.contains(
-                              shuffledAnswer[i],
-                            );
-
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-                              child: SizedBox(
-                                width: 210,
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.fromLTRB(
-                                    8,
-                                    10,
-                                    8,
-                                    10,
-                                  ),
-                                  leading: Radio<String>(
-                                    value: shuffledAnswer[i],
-                                    groupValue: selectedAnswer,
-                                    fillColor: WidgetStateColor.resolveWith((
-                                      Set<WidgetState> states,
-                                    ) {
-                                      if (states.contains(
-                                            WidgetState.selected,
-                                          ) &&
-                                          !completedQuestion.contains(
-                                            shuffledAnswer[i],
-                                          )) {
-                                        if (!isChecked) {
-                                          return Color.fromRGBO(
-                                            28,
-                                            176,
-                                            246,
-                                            1,
-                                          );
-                                        } else {
-                                          if (isCorrect) {
-                                            return Color.fromRGBO(
-                                              165,
-                                              237,
-                                              110,
-                                              1,
-                                            );
-                                          } else {
-                                            return Color.fromRGBO(
-                                              255,
-                                              178,
-                                              178,
-                                              1,
-                                            );
-                                          }
-                                        }
-                                      }
-                                      return Color.fromRGBO(229, 229, 229, 1);
-                                    }),
-                                    onChanged:
-                                        isDisabled || !tapState
-                                            ? null
-                                            : (value) {
-                                              setState(() {
-                                                selectedAnswer = value!;
-                                                if (selectedQuestion != "" &&
-                                                    selectedAnswer != "") {
-                                                  checkAnswer();
-                                                }
-                                              });
-                                            },
-                                  ),
-                                  enabled: !isDisabled,
-                                  selected: isSelected,
-                                  selectedTileColor:
-                                      isChecked
-                                          ? isCorrect
-                                              ? Color.fromRGBO(215, 255, 184, 1)
-                                              : Color.fromRGBO(255, 223, 224, 1)
-                                          : Color.fromRGBO(221, 243, 254, 1),
-                                  title: Text(
-                                    shuffledAnswer[i],
-                                    style: TextStyle(
-                                      color:
-                                          isDisabled
-                                              ? Color.fromRGBO(
-                                                229,
-                                                229,
-                                                229,
-                                                .8,
-                                              )
-                                              : isChecked
-                                              ? isCorrect
-                                                  ? Color.fromRGBO(
-                                                    90,
-                                                    169,
-                                                    4,
-                                                    1,
-                                                  )
-                                                  : Color.fromRGBO(
-                                                    234,
-                                                    43,
-                                                    43,
-                                                    1,
-                                                  )
-                                              : Colors.black,
-                                    ),
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      width: 2,
-                                      color:
-                                          isSelected
-                                              ? isChecked
-                                                  ? isCorrect
-                                                      ? Color.fromRGBO(
-                                                        165,
-                                                        237,
-                                                        110,
-                                                        1,
-                                                      )
-                                                      : Color.fromRGBO(
-                                                        255,
-                                                        178,
-                                                        178,
-                                                        1,
-                                                      )
-                                                  : Color.fromRGBO(
-                                                    28,
-                                                    176,
-                                                    246,
-                                                    1,
-                                                  )
-                                              : Color.fromRGBO(
-                                                229,
-                                                229,
-                                                229,
-                                                1,
-                                              ),
-                                    ),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  onTap: () {
-                                    !tapState
-                                        ? null
-                                        : setState(() {
-                                          selectedAnswer = shuffledAnswer[i];
-                                          if (selectedQuestion != "" &&
-                                              selectedAnswer != "") {
-                                            checkAnswer();
-                                          }
-                                        });
-                                  },
-                                ),
-                              ),
-                            );
-                          },
+                        MatchingTiles(
+                          notifier: notifier,
+                          tileValue: shuffledAnswer[i],
+                          isQuestion: false,
                         ),
-                    ],
-                  ),
+                      ],
+                    ),
                 ],
               ),
 
