@@ -19,7 +19,9 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
   List<String> shuffledQuestion = [];
   List<String> shuffledAnswer = [];
   Set<String> completedQuestion = {};
-  Set<String> completedAnswer = {};
+  Set<String> correctSet = {};
+  Set<String> checkedSet = {};
+  bool tapState = true;
   String selectedQuestion = "";
   String selectedAnswer = "";
 
@@ -31,14 +33,65 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
   }
 
   void checkAnswer() {
-    if (sampleQuestion[selectedQuestion] == selectedAnswer) {
-      completedQuestion.add(selectedQuestion);
-      completedAnswer.add(selectedAnswer);
-    }
+    bool isCorrect = sampleQuestion[selectedQuestion] == selectedAnswer;
 
     setState(() {
-      selectedQuestion = "";
-      selectedAnswer = "";
+      if (isCorrect) {
+        correctSet.add(selectedQuestion);
+        correctSet.add(selectedAnswer);
+      }
+      checkedSet.add(selectedQuestion);
+      checkedSet.add(selectedAnswer);
+      tapState = !tapState;
+    });
+
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        correctSet = {};
+        checkedSet = {};
+        tapState = !tapState;
+
+        if (isCorrect) {
+          completedQuestion.add(selectedQuestion);
+          completedQuestion.add(selectedAnswer);
+        }
+        selectedQuestion = "";
+        selectedAnswer = "";
+
+        if (completedQuestion.length == sampleQuestion.length * 2) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Color.fromRGBO(221, 243, 254, 1),
+              duration: Duration(days: 1),
+              content: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: CircleAvatar(
+                        backgroundColor: Color.fromRGBO(28, 176, 246, 1),
+                        foregroundColor: Colors.white,
+                        radius: 15,
+                        child: Icon(Icons.check_rounded, size: 20),
+                      ),
+                      title: Text(
+                        "Hebat!",
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Color.fromRGBO(28, 176, 246, 1),
+                          fontFamily: "Jellee",
+                        ),
+                      ),
+                    ),
+                  ),
+                  // CheckButton(state: true),
+                ],
+              ),
+            ),
+          );
+        }
+      });
     });
   }
 
@@ -56,7 +109,7 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(14.0),
+        padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,6 +139,12 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                             bool isDisabled = completedQuestion.contains(
                               shuffledQuestion[i],
                             );
+                            bool isCorrect = correctSet.contains(
+                              shuffledQuestion[i],
+                            );
+                            bool isChecked = checkedSet.contains(
+                              shuffledQuestion[i],
+                            );
 
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
@@ -94,9 +153,9 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                 child: ListTile(
                                   contentPadding: EdgeInsets.fromLTRB(
                                     8,
-                                    6,
+                                    10,
                                     8,
-                                    6,
+                                    10,
                                   ),
                                   trailing: Radio<String>(
                                     value: shuffledQuestion[i],
@@ -105,14 +164,44 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                       Set<WidgetState> states,
                                     ) {
                                       if (states.contains(
-                                        WidgetState.selected,
-                                      )) {
-                                        return Color.fromRGBO(28, 176, 246, 1);
+                                            WidgetState.selected,
+                                          ) &&
+                                          !completedQuestion.contains(
+                                            shuffledQuestion[i],
+                                          )) {
+                                        if (!isChecked) {
+                                          return Color.fromRGBO(
+                                            28,
+                                            176,
+                                            246,
+                                            1,
+                                          );
+                                        } else {
+                                          if (isCorrect) {
+                                            return Color.fromRGBO(
+                                              165,
+                                              237,
+                                              110,
+                                              1,
+                                            );
+                                            // return Color.fromRGBO(215, 255, 184, 1)
+                                            // return Color.fromRGBO(90, 169, 4, 1)
+                                          } else {
+                                            return Color.fromRGBO(
+                                              255,
+                                              178,
+                                              178,
+                                              1,
+                                            );
+                                            // return Color.fromRGBO(255, 223, 224, 1);
+                                            // return Color.fromRGBO(234, 43, 43, 1);
+                                          }
+                                        }
                                       }
                                       return Color.fromRGBO(229, 229, 229, 1);
                                     }),
                                     onChanged:
-                                        isDisabled
+                                        isDisabled || !tapState
                                             ? null
                                             : (value) {
                                               setState(() {
@@ -126,18 +215,12 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                   ),
                                   enabled: !isDisabled,
                                   selected: isSelected,
-                                  selectedTileColor: Color.fromRGBO(
-                                    221,
-                                    243,
-                                    254,
-                                    1,
-                                  ),
-                                  selectedColor: Color.fromRGBO(
-                                    28,
-                                    176,
-                                    246,
-                                    1,
-                                  ),
+                                  selectedTileColor:
+                                      isChecked
+                                          ? isCorrect
+                                              ? Color.fromRGBO(215, 255, 184, 1)
+                                              : Color.fromRGBO(255, 223, 224, 1)
+                                          : Color.fromRGBO(221, 243, 254, 1),
                                   title: Text(
                                     shuffledQuestion[i],
                                     textAlign: TextAlign.end,
@@ -151,6 +234,20 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                                 229,
                                                 .8,
                                               )
+                                              : isChecked
+                                              ? isCorrect
+                                                  ? Color.fromRGBO(
+                                                    90,
+                                                    169,
+                                                    4,
+                                                    1,
+                                                  )
+                                                  : Color.fromRGBO(
+                                                    234,
+                                                    43,
+                                                    43,
+                                                    1,
+                                                  )
                                               : Colors.black,
                                     ),
                                   ),
@@ -159,7 +256,26 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                       width: 2,
                                       color:
                                           isSelected
-                                              ? Color.fromRGBO(28, 176, 246, 1)
+                                              ? isChecked
+                                                  ? isCorrect
+                                                      ? Color.fromRGBO(
+                                                        165,
+                                                        237,
+                                                        110,
+                                                        1,
+                                                      )
+                                                      : Color.fromRGBO(
+                                                        255,
+                                                        178,
+                                                        178,
+                                                        1,
+                                                      )
+                                                  : Color.fromRGBO(
+                                                    28,
+                                                    176,
+                                                    246,
+                                                    1,
+                                                  )
                                               : Color.fromRGBO(
                                                 229,
                                                 229,
@@ -170,13 +286,16 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   onTap: () {
-                                    setState(() {
-                                      selectedQuestion = shuffledQuestion[i];
-                                      if (selectedQuestion != "" &&
-                                          selectedAnswer != "") {
-                                        checkAnswer();
-                                      }
-                                    });
+                                    !tapState
+                                        ? null
+                                        : setState(() {
+                                          selectedQuestion =
+                                              shuffledQuestion[i];
+                                          if (selectedQuestion != "" &&
+                                              selectedAnswer != "") {
+                                            checkAnswer();
+                                          }
+                                        });
                                   },
                                 ),
                               ),
@@ -193,7 +312,13 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                           builder: (context) {
                             bool isSelected =
                                 selectedAnswer == shuffledAnswer[i];
-                            bool isDisabled = completedAnswer.contains(
+                            bool isDisabled = completedQuestion.contains(
+                              shuffledAnswer[i],
+                            );
+                            bool isCorrect = correctSet.contains(
+                              shuffledAnswer[i],
+                            );
+                            bool isChecked = checkedSet.contains(
                               shuffledAnswer[i],
                             );
 
@@ -204,9 +329,9 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                 child: ListTile(
                                   contentPadding: EdgeInsets.fromLTRB(
                                     8,
-                                    6,
+                                    10,
                                     8,
-                                    6,
+                                    10,
                                   ),
                                   leading: Radio<String>(
                                     value: shuffledAnswer[i],
@@ -215,14 +340,40 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                       Set<WidgetState> states,
                                     ) {
                                       if (states.contains(
-                                        WidgetState.selected,
-                                      )) {
-                                        return Color.fromRGBO(28, 176, 246, 1);
+                                            WidgetState.selected,
+                                          ) &&
+                                          !completedQuestion.contains(
+                                            shuffledAnswer[i],
+                                          )) {
+                                        if (!isChecked) {
+                                          return Color.fromRGBO(
+                                            28,
+                                            176,
+                                            246,
+                                            1,
+                                          );
+                                        } else {
+                                          if (isCorrect) {
+                                            return Color.fromRGBO(
+                                              165,
+                                              237,
+                                              110,
+                                              1,
+                                            );
+                                          } else {
+                                            return Color.fromRGBO(
+                                              255,
+                                              178,
+                                              178,
+                                              1,
+                                            );
+                                          }
+                                        }
                                       }
                                       return Color.fromRGBO(229, 229, 229, 1);
                                     }),
                                     onChanged:
-                                        isDisabled
+                                        isDisabled || !tapState
                                             ? null
                                             : (value) {
                                               setState(() {
@@ -236,18 +387,12 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                   ),
                                   enabled: !isDisabled,
                                   selected: isSelected,
-                                  selectedTileColor: Color.fromRGBO(
-                                    221,
-                                    243,
-                                    254,
-                                    1,
-                                  ),
-                                  selectedColor: Color.fromRGBO(
-                                    28,
-                                    176,
-                                    246,
-                                    1,
-                                  ),
+                                  selectedTileColor:
+                                      isChecked
+                                          ? isCorrect
+                                              ? Color.fromRGBO(215, 255, 184, 1)
+                                              : Color.fromRGBO(255, 223, 224, 1)
+                                          : Color.fromRGBO(221, 243, 254, 1),
                                   title: Text(
                                     shuffledAnswer[i],
                                     style: TextStyle(
@@ -259,6 +404,20 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                                 229,
                                                 .8,
                                               )
+                                              : isChecked
+                                              ? isCorrect
+                                                  ? Color.fromRGBO(
+                                                    90,
+                                                    169,
+                                                    4,
+                                                    1,
+                                                  )
+                                                  : Color.fromRGBO(
+                                                    234,
+                                                    43,
+                                                    43,
+                                                    1,
+                                                  )
                                               : Colors.black,
                                     ),
                                   ),
@@ -267,7 +426,26 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                       width: 2,
                                       color:
                                           isSelected
-                                              ? Color.fromRGBO(28, 176, 246, 1)
+                                              ? isChecked
+                                                  ? isCorrect
+                                                      ? Color.fromRGBO(
+                                                        165,
+                                                        237,
+                                                        110,
+                                                        1,
+                                                      )
+                                                      : Color.fromRGBO(
+                                                        255,
+                                                        178,
+                                                        178,
+                                                        1,
+                                                      )
+                                                  : Color.fromRGBO(
+                                                    28,
+                                                    176,
+                                                    246,
+                                                    1,
+                                                  )
                                               : Color.fromRGBO(
                                                 229,
                                                 229,
@@ -278,13 +456,15 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   onTap: () {
-                                    setState(() {
-                                      selectedAnswer = shuffledAnswer[i];
-                                      if (selectedQuestion != "" &&
-                                          selectedAnswer != "") {
-                                        checkAnswer();
-                                      }
-                                    });
+                                    !tapState
+                                        ? null
+                                        : setState(() {
+                                          selectedAnswer = shuffledAnswer[i];
+                                          if (selectedQuestion != "" &&
+                                              selectedAnswer != "") {
+                                            checkAnswer();
+                                          }
+                                        });
                                   },
                                 ),
                               ),
@@ -296,37 +476,109 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                 ],
               ),
 
-              Container(
-                // color: Color.fromRGBO(87, 204, 2, 1),
-                padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(87, 204, 2, 1),
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromRGBO(88, 167, 0, 1),
-                      offset: Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Text(
-                    "PERIKSA",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontFamily: "Jellee",
-                      letterSpacing: 2,
-                    ),
-                  ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 28),
+                child: ToggleDropShadow(
+                  offset: 6,
+                  dropShadowColor: Color.fromRGBO(17, 117, 163, 1),
+                  height: 60,
+                  child: (notifier) => CheckButton(toggleNotifier: notifier),
                 ),
               ),
-
-              // TextButton(onPressed: (){}, style: ButtonStyle(backgroundColor: ), child: Text("PERIKSA"))
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class CheckButton extends StatelessWidget {
+  final ValueNotifier<bool> toggleNotifier;
+  const CheckButton({super.key, required this.toggleNotifier});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        toggleNotifier.value = !toggleNotifier.value;
+
+        Future.delayed(Duration(milliseconds: 100), () {
+          toggleNotifier.value = !toggleNotifier.value;
+        });
+      },
+      style: TextButton.styleFrom(
+        backgroundColor: Color.fromRGBO(28, 176, 246, 1),
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0, 18, 0, 18),
+
+        child: Center(
+          child: Text(
+            "PERIKSA",
+            style: TextStyle(
+              fontSize: 18,
+              fontFamily: "Jellee",
+              letterSpacing: 2,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ToggleDropShadow extends StatefulWidget {
+  final double offset;
+  final Color dropShadowColor;
+  final double height;
+  final Widget Function(ValueNotifier<bool> toggleNotifier) child;
+
+  const ToggleDropShadow({
+    super.key,
+    required this.offset,
+    required this.dropShadowColor,
+    required this.height,
+    required this.child,
+  });
+
+  @override
+  State<ToggleDropShadow> createState() => _ToggleDropShadowState();
+}
+
+class _ToggleDropShadowState extends State<ToggleDropShadow> {
+  final ValueNotifier<bool> toggleNotifier = ValueNotifier<bool>(false);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: AlignmentDirectional.bottomCenter,
+      children: [
+        Expanded(
+          child: Container(
+            height: widget.height,
+            decoration: BoxDecoration(
+              color: widget.dropShadowColor,
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+        ),
+
+        ValueListenableBuilder(
+          valueListenable: toggleNotifier,
+          builder:
+              (context, pressed, _) => Positioned(
+                bottom: !pressed ? widget.offset : 0,
+                left: 0,
+                right: 0,
+                child: widget.child(toggleNotifier),
+              ),
+        ),
+
+        SizedBox(height: widget.height + widget.offset + 2),
+      ],
     );
   }
 }
