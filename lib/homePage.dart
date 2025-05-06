@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
+import 'package:project_kel2_mfe/Profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -504,7 +505,15 @@ class _HomePageState extends State<HomePage> {
             size: 15,
             color: Colors.red,
           ),
-          FaIcon(FontAwesomeIcons.userTie, size: 15),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Profile_Page()),
+              );
+            },
+            icon: FaIcon(FontAwesomeIcons.userTie, size: 15),
+          ),
         ],
       ),
     );
