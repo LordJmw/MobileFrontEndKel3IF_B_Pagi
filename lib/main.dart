@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_kel2_mfe/arranging_words.dart';
 import 'package:project_kel2_mfe/feat/register.dart';
 import 'package:project_kel2_mfe/homePage.dart';
 
@@ -13,8 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      // home: const RegisterPage(),
-      home: HomePage(),
+      home: RegisterPage(),
       debugShowCheckedModeBanner: false,
     );
   }

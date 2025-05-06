@@ -58,7 +58,7 @@ class _ArrangingWordsState extends State<ArrangingWords> {
                   padding: EdgeInsets.only(left: 10),
                   child: Container(
                     alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width * 0.2,
+                    width: MediaQuery.of(context).size.width * 0.4,
                     height: MediaQuery.of(context).size.height * 0.1,
                     decoration: BoxDecoration(
                       border: Border.all(width: 2, color: Colors.black),
