@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import 'package:project_kel2_mfe/Profile.dart';
-import 'package:project_kel2_mfe/models/quizQuestion.dart';
+import 'package:project_kel2_mfe/models/quizData.dart';
 import 'package:project_kel2_mfe/quizPage.dart';
 
 class HomePage extends StatefulWidget {

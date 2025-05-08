@@ -6,7 +6,7 @@ import 'package:project_kel2_mfe/textfield.dart';
 class QuizUnit {
   final String title;
   final List<String> category;
-  final int progress = 0;
+  final ValueNotifier<double> progress = ValueNotifier(0);
   final List<QuizStage> stages;
 
   QuizUnit({required this.title, required this.category})
@@ -39,6 +39,22 @@ class QuizUnit {
               },
               pageCounter: pageCounter,
             ),
+            (pageCounter) => ArrangingWords(
+              question: "saya suka burger",
+              words: ["I", "You", "like", "soda", "burger", "always"],
+              answers: "i like burger",
+              pageCounter: pageCounter,
+            ),
+            (pageCounter) => MatchingQuestion(
+              pairs: {
+                "i": "saya",
+                "you": "kamu",
+                "like": "suka",
+                "play": "bermain",
+                "sunday": "minggu",
+              },
+              pageCounter: pageCounter,
+            ),
           ],
         ),
       ];
@@ -46,9 +62,15 @@ class QuizUnit {
 
 class PageCounter {
   final ValueNotifier<int> page = ValueNotifier(0);
+  final ValueNotifier<bool> isCompleted = ValueNotifier(false);
 
   void nextPage() {
     page.value += 1;
+    isCompleted.value = !isCompleted.value;
+  }
+
+  void completed() {
+    isCompleted.value = !isCompleted.value;
   }
 }
 
