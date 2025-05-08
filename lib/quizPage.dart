@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_kel2_mfe/homePage.dart';
-import 'package:project_kel2_mfe/models/quizQuestion.dart';
+import 'package:project_kel2_mfe/maindisplay.dart';
+import 'package:project_kel2_mfe/models/quizData.dart';
 
 class QuizPage extends StatefulWidget {
   final QuizStage quizStage;
@@ -27,7 +27,7 @@ class _QuizPageState extends State<QuizPage> {
         if (page == listQuiz.length - 1) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+            MaterialPageRoute(builder: (BuildContext context) => MainDisplay()),
           );
         } else {
           page = widget.quizStage.pageCounter.page.value;
@@ -48,7 +48,17 @@ class _QuizPageState extends State<QuizPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.clear, size: 50, color: Colors.grey[400]),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => MainDisplay(),
+              ),
+            );
+          },
+          icon: Icon(Icons.clear, size: 38, color: Colors.grey[400]),
+        ),
         title: LinearProgressIndicator(
           value: progress,
           minHeight: 18,

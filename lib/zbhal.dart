@@ -43,54 +43,29 @@ class _GoldaState extends State<Golda> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        currentIndex: 0,
-        onTap: (index) {},
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book, color: Colors.purple),
-            label: 'Dictionary',
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          "Engliboo",
+          style: TextStyle(
+            color: Color.fromRGBO(28, 176, 246, 1),
+            fontFamily: "Jellee",
+            fontSize: 24,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book_outlined, color: Colors.red),
-            label: 'Lessons',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.text_fields, color: Colors.red),
-            label: 'Vocabulary',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: Colors.blue),
-            label: 'Profile',
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 24),
+            child: Icon(Icons.search, color: Colors.lightBlue),
           ),
         ],
       ),
-
       body: Padding(
         padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Engliboo",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.lightBlue,
-                  ),
-                ),
-                Icon(Icons.search, color: Colors.lightBlue),
-              ],
-            ),
             SizedBox(height: 20),
             Text(
               "Ayo, Latih kata - kata bahasa Inggrismu!",

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_kel2_mfe/components/check_button.dart';
 import 'package:project_kel2_mfe/components/press_effect.dart';
-import 'package:project_kel2_mfe/models/quizQuestion.dart';
+import 'package:project_kel2_mfe/models/quizData.dart';
 
 class ArrangingWords extends StatefulWidget {
   final List<String> words;
