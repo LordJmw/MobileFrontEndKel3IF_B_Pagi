@@ -137,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(height: 20),
 
-                // Password confirmation field
+                // Password confirmation fieldd
                 SizedBox(
                   width: 290,
                   height: 40,
