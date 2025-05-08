@@ -15,8 +15,15 @@ class _GoldaState extends State<Golda> {
     {'label': 'Baru dipelajari', 'icon': Icons.access_time},
   ];
 
-  final List<Map<String, String>> vocabulary = [
+  final List<Map<String, String>> Initialvocabulary = [
     {'en': 'open', 'id': 'buka'},
+    {'en': 'apple', 'id': 'apel'},
+    {'en': 'animal', 'id': 'hewan'},
+    {'en': 'book', 'id': 'buku'},
+    {'en': 'brain', 'id': 'otak'},
+    {'en': 'chicken', 'id': 'ayam'},
+    {'en': 'worm', 'id': 'cacing'},
+    {'en': 'table', 'id': 'meja'},
     {'en': 'new', 'id': 'baru'},
     {'en': 'store', 'id': 'toko'},
     {'en': "don't worry", 'id': 'jangan khawatir'},
@@ -24,6 +31,14 @@ class _GoldaState extends State<Golda> {
     {'en': 'three', 'id': 'tiga'},
     {'en': 'smart', 'id': 'pintar'},
   ];
+  late List<Map<String, String>> vocabulary;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize vocabulary as a copy of the initial list
+    vocabulary = List<Map<String, String>>.from(Initialvocabulary);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +150,15 @@ class _GoldaState extends State<Golda> {
                     onSelected: (value) {
                       setState(() {
                         selectedOption = value;
+                        if (value == 'Berdasarkan abjad') {
+                          vocabulary.sort(
+                            (a, b) => a['en']!.compareTo(b['en']!),
+                          );
+                        } else if (value == "Baru dipelajari") {
+                          vocabulary = List<Map<String, String>>.from(
+                            Initialvocabulary,
+                          );
+                        }
                       });
                     },
                     color: Colors.grey.shade100.withOpacity(0.95),
