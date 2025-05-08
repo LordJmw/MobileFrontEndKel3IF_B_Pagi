@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import 'package:project_kel2_mfe/Profile.dart';
+import 'package:project_kel2_mfe/models/quizQuestion.dart';
+import 'package:project_kel2_mfe/quizPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,6 +38,11 @@ class _HomePageState extends State<HomePage> {
       "Tenses": ["Simple Present", "Simple Past", "Simple Present Future"],
     },
   ];
+
+  final QuizUnit quizUnit = QuizUnit(
+    title: "Halo Nama Saya...",
+    category: ["Simple Present", "Simple Past", "Self-Introduced"],
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -440,7 +447,21 @@ class _HomePageState extends State<HomePage> {
                                           Expanded(
                                             flex: 1,
                                             child: ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder:
+                                                        (
+                                                          BuildContext context,
+                                                        ) => QuizPage(
+                                                          quizStage:
+                                                              quizUnit
+                                                                  .stages[0],
+                                                        ),
+                                                  ),
+                                                );
+                                              },
                                               style: ButtonStyle(
                                                 minimumSize:
                                                     WidgetStateProperty.all(
