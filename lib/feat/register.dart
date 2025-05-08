@@ -44,13 +44,19 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Nama Pengguna',
+                      errorStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                        height: 0.6,
+                      ),
+                      contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 15),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(width: 0.5, color: Colors.grey),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.blue, width: 2.5),
+                        borderSide: BorderSide(color: Colors.blue, width: 0.5),
                       ),
                     ),
                     validator: (value) {
@@ -70,13 +76,19 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Email',
+                      errorStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                        height: 0.6,
+                      ),
+                      contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 15),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(width: 0.5, color: Colors.grey),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.blue, width: 2.5),
+                        borderSide: BorderSide(color: Colors.blue, width: 0.5),
                       ),
                     ),
                     validator: (value) {
@@ -99,26 +111,19 @@ class _RegisterPageState extends State<RegisterPage> {
                     obscureText: _obscureText,
                     decoration: InputDecoration(
                       labelText: 'Kata Sandi',
+                      errorStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                        height: 0.6,
+                      ),
+                      contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 15),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(width: 0.5, color: Colors.grey),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.blue, width: 2.5),
-                      ),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                        icon: Icon(
-                          _obscureText
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        color: Colors.grey,
+                        borderSide: BorderSide(color: Colors.blue, width: 0.5),
                       ),
                     ),
                     validator: (value) {
@@ -140,26 +145,19 @@ class _RegisterPageState extends State<RegisterPage> {
                     obscureText: _obscureTextConfirm,
                     decoration: InputDecoration(
                       labelText: 'Konfirmasi Kata Sandi',
+                      errorStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                        height: 0.6,
+                      ),
+                      contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 15),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(width: 0.5, color: Colors.grey),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _obscureTextConfirm = !_obscureTextConfirm;
-                          });
-                        },
-                        icon: Icon(
-                          _obscureTextConfirm
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        color: Colors.grey,
-                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.blue, width: 2.5),
+                        borderSide: BorderSide(color: Colors.blue, width: 0.5),
                       ),
                     ),
                     validator: (value) {
