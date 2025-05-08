@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:project_kel2_mfe/components/check_button.dart';
+import 'package:project_kel2_mfe/components/press_effect.dart';
+import 'package:project_kel2_mfe/models/quizQuestion.dart';
 
 class ArrangingWords extends StatefulWidget {
   final List<String> words;
   final String answers;
   final String question;
+  final PageCounter pageCounter;
+
   const ArrangingWords({
     super.key,
     required this.question,
     required this.words,
     required this.answers,
+    required this.pageCounter,
   });
 
   @override
@@ -18,7 +24,8 @@ class ArrangingWords extends StatefulWidget {
 class _ArrangingWordsState extends State<ArrangingWords> {
   List<String> selectedWords = [];
   List<String> AvailableWords = [];
-  Widget? benarSalah = null;
+
+  String buttonText = "PERIKSA";
   bool _showAnswer = false;
 
   @override
@@ -28,18 +35,34 @@ class _ArrangingWordsState extends State<ArrangingWords> {
     AvailableWords = List.from(widget.words);
   }
 
+  void checkAnswer() {
+    String UserAnswer = selectedWords.join(" ");
+    setState(() {
+      if (UserAnswer.toLowerCase() == widget.answers.toLowerCase()) {
+        buttonText = "JAWABAN ANDA BENAR";
+        Future.delayed(Duration(seconds: 1), () {
+          widget.pageCounter.nextPage();
+        });
+      } else {
+        buttonText = "JAWABAN ANDA SALAH";
+        Future.delayed(Duration(seconds: 1), () {
+          setState(() {
+            buttonText = "PERIKSA";
+          });
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // double screenWidth = MediaQuery.of(context).size.width;
     // bool smallScreen = screenWidth < 600;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Menyusun kalimat"),
-        backgroundColor: Colors.blue,
-      ),
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB(20, 30, 0, 15),
@@ -184,8 +207,6 @@ class _ArrangingWordsState extends State<ArrangingWords> {
                       },
                     ),
 
-                    if (benarSalah != null) benarSalah!,
-
                     SizedBox(height: 20),
 
                     //agar bisa drag word
@@ -231,35 +252,48 @@ class _ArrangingWordsState extends State<ArrangingWords> {
                           }).toList(),
                     ),
                     SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        String UserAnswer = selectedWords.join(" ");
-                        if (UserAnswer.toLowerCase() ==
-                            widget.answers.toLowerCase()) {
-                          setState(() {
-                            benarSalah = Text(
-                              "Jawaban Anda Benar!",
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.green,
-                              ),
-                            );
-                          });
-                        }
-                        if (UserAnswer.toLowerCase() !=
-                            widget.answers.toLowerCase()) {
-                          setState(() {
-                            benarSalah = Text(
-                              "Jawaban Anda Salah!",
-                              style: TextStyle(fontSize: 15, color: Colors.red),
-                            );
-                          });
-                        }
-                      },
-                      child: Text("Check"),
-                    ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     String UserAnswer = selectedWords.join(" ");
+                    //     if (UserAnswer.toLowerCase() ==
+                    //         widget.answers.toLowerCase()) {
+                    //       ScaffoldMessenger.of(context).showSnackBar(
+                    //         SnackBar(
+                    //           backgroundColor: Colors.green,
+                    //           content: Text("Jawaban Anda Benar"),
+                    //           duration: Duration(seconds: 3),
+                    //         ),
+                    //       );
+                    //     }
+                    //     if (UserAnswer.toLowerCase() !=
+                    //         widget.answers.toLowerCase()) {
+                    //       ScaffoldMessenger.of(context).showSnackBar(
+                    //         SnackBar(
+                    //           backgroundColor: Colors.red,
+                    //           content: Text("Jawaban Anda Salah"),
+                    //           duration: Duration(seconds: 3),
+                    //         ),
+                    //       );
+                    //     }
+                    //   },
+                    //   child: Text("Check"),
+                    // ),
                   ],
                 ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 0, 14, 28),
+              child: PressEffect(
+                offset: 6,
+                child:
+                    (toggle) => CheckButton(
+                      pressEffectController: toggle,
+                      buttonState: true,
+                      action: checkAnswer,
+                      label: buttonText,
+                    ),
               ),
             ),
           ],

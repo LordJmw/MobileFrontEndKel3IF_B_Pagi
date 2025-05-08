@@ -1,21 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:project_kel2_mfe/components/check_button.dart';
+import 'package:project_kel2_mfe/components/press_effect.dart';
+import 'package:project_kel2_mfe/models/quizQuestion.dart';
 
-class Textfield extends StatelessWidget {
-  const Textfield({super.key});
+class Textfield extends StatefulWidget {
+  final Image image;
+  final String label;
+  final String correctAnswer;
+  final PageCounter pageCounter;
+  const Textfield({
+    super.key,
+    required this.image,
+    required this.label,
+    required this.correctAnswer,
+    required this.pageCounter,
+  });
+
+  @override
+  State<Textfield> createState() => _TextfieldState();
+}
+
+class _TextfieldState extends State<Textfield> {
+  final TextEditingController answer = TextEditingController();
+  bool isActive = false;
+  String buttonText = "PERIKSA";
+
+  void checkAnswer() {
+    setState(() {
+      if (widget.correctAnswer == answer.text.toLowerCase()) {
+        buttonText = "JAWABAN ANDA BENAR";
+        Future.delayed(Duration(seconds: 1), () {
+          widget.pageCounter.nextPage();
+        });
+      } else {
+        buttonText = "JAWABAN ANDA SALAH";
+        Future.delayed(Duration(seconds: 1), () {
+          setState(() {
+            buttonText = "PERIKSA";
+          });
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.clear, size: 50, color: Colors.grey[400]),
-        title: LinearProgressIndicator(
-          value: 0.5,
-          minHeight: 18,
-          borderRadius: BorderRadius.circular(100),
-          color: Colors.orange[500],
-          backgroundColor: Color.fromRGBO(229, 229, 229, 1),
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(14.0),
         child: Center(
@@ -40,16 +70,7 @@ class Textfield extends StatelessWidget {
                   border: Border.all(width: 4, color: Color(0xFFE5E5E5)),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/kelinci.png',
-                      width: 200,
-                      height: 200,
-                    ),
-                    Text("Kelinci"),
-                  ],
-                ),
+                child: Column(children: [widget.image, Text(widget.label)]),
               ),
 
               TextField(
@@ -67,35 +88,27 @@ class Textfield extends StatelessWidget {
                   filled: true,
                   fillColor: Color.fromRGBO(247, 247, 247, 1),
                 ),
+                controller: answer,
+                onChanged: (value) {
+                  setState(() {
+                    isActive = true;
+                  });
+                },
               ),
 
-              Container(
-                // color: Color.fromRGBO(87, 204, 2, 1),
-                padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(87, 204, 2, 1),
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromRGBO(88, 167, 0, 1),
-                      offset: Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Text(
-                    "PERIKSA",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontFamily: "Jellee",
-                      letterSpacing: 2,
-                    ),
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 28),
+                child: PressEffect(
+                  offset: 6,
+                  child:
+                      (toggle) => CheckButton(
+                        pressEffectController: toggle,
+                        buttonState: isActive,
+                        action: checkAnswer,
+                        label: buttonText,
+                      ),
                 ),
               ),
-
-              // TextButton(onPressed: (){}, style: ButtonStyle(backgroundColor: ), child: Text("PERIKSA"))
             ],
           ),
         ),

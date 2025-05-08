@@ -43,35 +43,6 @@ class _GoldaState extends State<Golda> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        currentIndex: 0,
-        onTap: (index) {},
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book, color: Colors.purple),
-            label: 'Dictionary',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book_outlined, color: Colors.red),
-            label: 'Lessons',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.text_fields, color: Colors.red),
-            label: 'Vocabulary',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: Colors.blue),
-            label: 'Profile',
-          ),
-        ],
-      ),
-
       body: Padding(
         padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
         child: Column(
