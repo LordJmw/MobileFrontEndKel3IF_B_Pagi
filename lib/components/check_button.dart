@@ -4,11 +4,15 @@ import 'package:project_kel2_mfe/components/press_effect.dart';
 class CheckButton extends StatefulWidget {
   final PressEffectNotifier pressEffectController;
   final bool buttonState;
+  final VoidCallback? action;
+  final String label;
 
   const CheckButton({
     super.key,
     required this.pressEffectController,
     required this.buttonState,
+    this.action,
+    required this.label,
   });
 
   @override
@@ -45,6 +49,7 @@ class _CheckButtonState extends State<CheckButton> {
           widget.buttonState
               ? () {
                 widget.pressEffectController.press();
+                widget.action?.call();
               }
               : null,
       style: TextButton.styleFrom(
@@ -59,7 +64,7 @@ class _CheckButtonState extends State<CheckButton> {
         padding: EdgeInsets.fromLTRB(0, 18, 0, 18),
 
         child: Text(
-          widget.buttonState ? "BERIKUTNYA" : "PERIKSA",
+          widget.label,
           style: TextStyle(
             fontSize: 18,
             fontFamily: "Jellee",

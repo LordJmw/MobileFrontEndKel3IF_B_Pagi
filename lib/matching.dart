@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_kel2_mfe/components/check_button.dart';
 import 'package:project_kel2_mfe/components/press_effect.dart';
+import 'package:project_kel2_mfe/models/quizData.dart';
 
 class TileState extends ChangeNotifier {
   final Map<String, String> listQuestion;
@@ -63,36 +64,41 @@ class TileState extends ChangeNotifier {
 }
 
 class MatchingQuestion extends StatefulWidget {
-  const MatchingQuestion({super.key});
+  final Map<String, String> pairs;
+  final PageCounter pageCounter;
+  const MatchingQuestion({
+    super.key,
+    required this.pairs,
+    required this.pageCounter,
+  });
 
   @override
   State<MatchingQuestion> createState() => _MatchingQuestionState();
 }
 
 class _MatchingQuestionState extends State<MatchingQuestion> {
-  final Map<String, String> sampleQuestion = {
-    "kucing": "cat",
-    "sedikit": "a little",
-    "berangin": "windy",
-    "sweter": "sweater",
-    "mendung": "cloudy",
-  };
   late TileState notifier;
   List<String> shuffledQuestion = [];
   List<String> shuffledAnswer = [];
   bool isCompleted = false;
+  String buttonText = "PERIKSA";
 
   @override
   void initState() {
     super.initState();
-    shuffledQuestion = sampleQuestion.keys.toList()..shuffle();
-    shuffledAnswer = sampleQuestion.values.toList()..shuffle();
-    notifier = TileState(listQuestion: sampleQuestion);
+    shuffledQuestion = widget.pairs.keys.toList()..shuffle();
+    shuffledAnswer = widget.pairs.values.toList()..shuffle();
+    notifier = TileState(listQuestion: widget.pairs);
 
     notifier.addListener(() {
       setState(() {
-        if (notifier.completedQuestion.length == sampleQuestion.length * 2) {
+        if (notifier.completedQuestion.length == widget.pairs.length * 2) {
           isCompleted = true;
+          buttonText = "JAWABAN ANDA BENAR";
+          widget.pageCounter.completed();
+          Future.delayed(Duration(seconds: 1), () {
+            widget.pageCounter.nextPage();
+          });
         }
       });
 
@@ -137,16 +143,6 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.clear, size: 50, color: Colors.grey[400]),
-        title: LinearProgressIndicator(
-          value: 0.5,
-          minHeight: 18,
-          borderRadius: BorderRadius.circular(100),
-          color: Colors.orange[500],
-          backgroundColor: Color.fromRGBO(229, 229, 229, 1),
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
         child: Center(
@@ -167,7 +163,7 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
 
               Column(
                 children: [
-                  for (int i = 0; i < sampleQuestion.length; i++)
+                  for (int i = 0; i < widget.pairs.length; i++)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 28),
                       child: Row(
@@ -213,6 +209,7 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                       (toggle) => CheckButton(
                         pressEffectController: toggle,
                         buttonState: isCompleted,
+                        label: buttonText,
                       ),
                 ),
               ),

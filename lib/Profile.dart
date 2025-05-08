@@ -13,8 +13,20 @@ class _Profile_PageState extends State<Profile_Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 236, 235, 235),
-      appBar: AppBar(title: Text("Profile")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 24),
+            child: Icon(
+              Icons.settings,
+              size: 32,
+              color: Color.fromRGBO(28, 176, 246, 1),
+            ),
+          ),
+        ],
+      ),
       body: Center(
         child: Container(
           color: Colors.white,
@@ -23,10 +35,6 @@ class _Profile_PageState extends State<Profile_Page> {
             padding: EdgeInsets.all(20),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [Icon(Icons.settings)],
-                ),
                 SizedBox(height: 20),
                 CircleAvatar(
                   radius: 60,
