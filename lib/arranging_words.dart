@@ -18,6 +18,8 @@ class ArrangingWords extends StatefulWidget {
 class _ArrangingWordsState extends State<ArrangingWords> {
   List<String> selectedWords = [];
   List<String> AvailableWords = [];
+  Widget? benarSalah = null;
+  bool _showAnswer = false;
 
   @override
   void initState() {
@@ -64,11 +66,39 @@ class _ArrangingWordsState extends State<ArrangingWords> {
                       border: Border.all(width: 2, color: Colors.black),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
-                    child: Text(widget.question),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(widget.question),
+                        if (_showAnswer != false)
+                          Text(
+                            widget.answers,
+                            style: TextStyle(
+                              color: const Color.fromARGB(255, 38, 179, 43),
+                              fontSize: 15,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
+
+            Padding(
+              padding: EdgeInsets.only(top: 25),
+              child: SwitchListTile(
+                value: _showAnswer,
+                onChanged: (bool val) {
+                  setState(() {
+                    _showAnswer = val;
+                  });
+                },
+                activeTrackColor: Colors.blue,
+                title: Text("Tunjukkan Jawaban"),
+              ),
+            ),
+
             Expanded(
               child: Center(
                 child: Column(
@@ -154,6 +184,8 @@ class _ArrangingWordsState extends State<ArrangingWords> {
                       },
                     ),
 
+                    if (benarSalah != null) benarSalah!,
+
                     SizedBox(height: 20),
 
                     //agar bisa drag word
@@ -204,23 +236,24 @@ class _ArrangingWordsState extends State<ArrangingWords> {
                         String UserAnswer = selectedWords.join(" ");
                         if (UserAnswer.toLowerCase() ==
                             widget.answers.toLowerCase()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: Colors.green,
-                              content: Text("Jawaban Anda Benar"),
-                              duration: Duration(seconds: 3),
-                            ),
-                          );
+                          setState(() {
+                            benarSalah = Text(
+                              "Jawaban Anda Benar!",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.green,
+                              ),
+                            );
+                          });
                         }
                         if (UserAnswer.toLowerCase() !=
                             widget.answers.toLowerCase()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text("Jawaban Anda Salah"),
-                              duration: Duration(seconds: 3),
-                            ),
-                          );
+                          setState(() {
+                            benarSalah = Text(
+                              "Jawaban Anda Salah!",
+                              style: TextStyle(fontSize: 15, color: Colors.red),
+                            );
+                          });
                         }
                       },
                       child: Text("Check"),

@@ -442,6 +442,8 @@ class _HomePageState extends State<HomePage> {
                                             child: ElevatedButton(
                                               onPressed: () {},
                                               style: ButtonStyle(
+                                                elevation:
+                                                    WidgetStateProperty.all(6),
                                                 minimumSize:
                                                     WidgetStateProperty.all(
                                                       //width maks tapi height cuma 30
@@ -453,9 +455,9 @@ class _HomePageState extends State<HomePage> {
                                                     >(
                                                       const Color.fromARGB(
                                                         255,
-                                                        217,
-                                                        217,
-                                                        217,
+                                                        77,
+                                                        200,
+                                                        81,
                                                       ),
                                                     ),
                                                 shape: WidgetStateProperty.all(

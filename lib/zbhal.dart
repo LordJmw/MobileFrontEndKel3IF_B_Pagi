@@ -140,76 +140,75 @@ class _GoldaState extends State<Golda> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("130 kata", style: TextStyle(fontFamily: "Jellee")),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: PopupMenuButton<String>(
-                    onSelected: (value) {
-                      setState(() {
-                        selectedOption = value;
-                        if (value == 'Berdasarkan abjad') {
-                          vocabulary.sort(
-                            (a, b) => a['en']!.compareTo(b['en']!),
-                          );
-                        } else if (value == "Baru dipelajari") {
-                          vocabulary = List<Map<String, String>>.from(
-                            Initialvocabulary,
-                          );
-                        }
-                      });
-                    },
-                    color: Colors.grey.shade100.withOpacity(0.95),
-                    shape: RoundedRectangleBorder(
+                SizedBox(
+                  width: 180,
+                  child: Container(
+                    constraints: BoxConstraints(minWidth: 150),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: DropdownButton<String>(
+                      underline: Container(),
+                      isExpanded: true,
+                      value: selectedOption,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedOption = value!;
+                          if (value == 'Berdasarkan abjad') {
+                            vocabulary.sort(
+                              (a, b) => a['en']!.compareTo(b['en']!),
+                            );
+                          } else if (value == "Baru dipelajari") {
+                            vocabulary = List<Map<String, String>>.from(
+                              Initialvocabulary,
+                            );
+                          }
+                        });
+                      },
+                      dropdownColor: Colors.grey.shade100.withOpacity(0.95),
                       borderRadius: BorderRadius.circular(12),
+                      elevation: 6,
+                      style: TextStyle(
+                        color: Colors.lightBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      icon: Icon(Icons.arrow_drop_down),
+
+                      items:
+                          options.map((option) {
+                            bool isSelected = option['label'] == selectedOption;
+                            return DropdownMenuItem<String>(
+                              value: option['label'],
+                              child: Container(
+                                decoration:
+                                    isSelected
+                                        ? BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          borderRadius: BorderRadius.circular(
+                                            6,
+                                          ),
+                                        )
+                                        : null,
+                                padding: EdgeInsets.symmetric(vertical: 4),
+                                child: Row(
+                                  children: [
+                                    Icon(option['icon'], color: Colors.black),
+                                    SizedBox(width: 8),
+                                    Expanded(child: Text(option['label'])),
+                                    if (isSelected)
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.grey,
+                                        size: 18,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList(),
                     ),
-                    offset: Offset(0, 40),
-                    elevation: 6,
-                    child: Row(
-                      children: [
-                        Text(
-                          "URUTKAN",
-                          style: TextStyle(
-                            color: Colors.lightBlue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Icon(Icons.arrow_drop_down, color: Colors.lightBlue),
-                      ],
-                    ),
-                    itemBuilder: (BuildContext context) {
-                      return options.map((option) {
-                        bool isSelected = option['label'] == selectedOption;
-                        return PopupMenuItem<String>(
-                          value: option['label'],
-                          child: Container(
-                            decoration:
-                                isSelected
-                                    ? BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(6),
-                                    )
-                                    : null,
-                            padding: EdgeInsets.symmetric(vertical: 4),
-                            child: Row(
-                              children: [
-                                Icon(option['icon'], color: Colors.black),
-                                SizedBox(width: 8),
-                                Expanded(child: Text(option['label'])),
-                                if (isSelected)
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.grey,
-                                    size: 18,
-                                  ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList();
-                    },
                   ),
                 ),
               ],

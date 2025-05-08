@@ -12,7 +12,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
   bool _obscureTextConfirm = true;
-
+  bool _isChecked = false;
+  String? _chekboxUnchecked;
   String? _password;
 
   @override
@@ -176,6 +177,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   width: 290,
                   child: ElevatedButton(
                     onPressed: () {
+                      setState(() {
+                        _chekboxUnchecked =
+                            _isChecked
+                                ? null
+                                : "Cek Jika Sudah Membaca Ketentuan dan Kebijakan Privasi";
+                      });
                       if (_formKey.currentState!.validate()) {
                         Navigator.pushReplacement(
                           context,
@@ -268,32 +275,58 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                SizedBox(
-                  width: 290,
-                  child: Text.rich(
-                    TextSpan(
-                      text: "Dengan masuk ke Engliboo, anda menyetujui ",
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 119, 119, 119),
-                        fontFamily: "Poppins",
-                        fontSize: 12,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "Ketentuan ",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(text: "dan "),
-                        TextSpan(
-                          text: "Kebijakan Privasi",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(text: " kami"),
-                      ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      value: _isChecked,
+                      onChanged: (val) {
+                        setState(() {
+                          _isChecked = val!;
+                          _chekboxUnchecked = null;
+                        });
+                      },
                     ),
-                    textAlign: TextAlign.center,
-                  ),
+                    SizedBox(
+                      width: 290,
+                      child: Text.rich(
+                        TextSpan(
+                          text: "Dengan masuk ke Engliboo, anda menyetujui ",
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 119, 119, 119),
+                            fontFamily: "Poppins",
+                            fontSize: 12,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Ketentuan ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(text: "dan "),
+                            TextSpan(
+                              text: "Kebijakan Privasi",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(text: " kami"),
+                          ],
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
+                    //checkbox tidak dicek
+                  ],
                 ),
+                if (_chekboxUnchecked != null)
+                  Text(
+                    _chekboxUnchecked!,
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      color: Colors.red,
+                      fontSize: 12,
+                    ),
+                  ),
               ],
             ),
           ),

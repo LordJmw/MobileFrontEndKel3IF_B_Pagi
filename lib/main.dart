@@ -15,7 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: RegisterPage(),
+      // home: RegisterPage(),
+      home: ArrangingWords(
+        question: "Saya makan nasi",
+        words: ['I', 'eat', 'rice'],
+        answers: "I eat rice",
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
