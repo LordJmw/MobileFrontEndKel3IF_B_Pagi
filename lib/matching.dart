@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project_kel2_mfe/components/check_button.dart';
+import 'package:project_kel2_mfe/components/press_effect.dart';
 
 class TileState extends ChangeNotifier {
   final Map<String, String> listQuestion;
@@ -78,6 +80,7 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
   late TileState notifier;
   List<String> shuffledQuestion = [];
   List<String> shuffledAnswer = [];
+  bool isCompleted = false;
 
   @override
   void initState() {
@@ -89,39 +92,45 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
     notifier.addListener(() {
       setState(() {
         if (notifier.completedQuestion.length == sampleQuestion.length * 2) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Color.fromRGBO(221, 243, 254, 1),
-              duration: Duration(days: 1),
-              content: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: CircleAvatar(
-                        backgroundColor: Color.fromRGBO(28, 176, 246, 1),
-                        foregroundColor: Colors.white,
-                        radius: 15,
-                        child: Icon(Icons.check_rounded, size: 20),
-                      ),
-                      title: Text(
-                        "Hebat!",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Color.fromRGBO(28, 176, 246, 1),
-                          fontFamily: "Jellee",
-                        ),
-                      ),
-                    ),
-                  ),
-                  // CheckButton(state: true),
-                ],
-              ),
-            ),
-          );
+          isCompleted = true;
         }
       });
+
+      //   setState(() {
+      //     if (notifier.completedQuestion.length == sampleQuestion.length * 2) {
+      //       ScaffoldMessenger.of(context).showSnackBar(
+      //         SnackBar(
+      //           backgroundColor: Color.fromRGBO(221, 243, 254, 1),
+      //           duration: Duration(days: 1),
+      //           content: Column(
+      //             children: [
+      //               Padding(
+      //                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
+      //                 child: ListTile(
+      //                   contentPadding: EdgeInsets.zero,
+      //                   leading: CircleAvatar(
+      //                     backgroundColor: Color.fromRGBO(28, 176, 246, 1),
+      //                     foregroundColor: Colors.white,
+      //                     radius: 15,
+      //                     child: Icon(Icons.check_rounded, size: 20),
+      //                   ),
+      //                   title: Text(
+      //                     "Hebat!",
+      //                     style: TextStyle(
+      //                       fontSize: 22,
+      //                       color: Color.fromRGBO(28, 176, 246, 1),
+      //                       fontFamily: "Jellee",
+      //                     ),
+      //                   ),
+      //                 ),
+      //               ),
+      //               // CheckButton(state: true),
+      //             ],
+      //           ),
+      //         ),
+      //       );
+      //     }
+      //   });
     });
   }
 
@@ -165,31 +174,28 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: ToggleDropShadow(
+                            child: PressEffect(
                               offset: 4,
-                              dropShadowColor: Color.fromRGBO(229, 229, 229, 1),
                               child:
                                   (toggle) => MatchingTiles(
                                     notifier: notifier,
                                     tileValue: shuffledQuestion[i],
                                     isQuestion: true,
-                                    toggleNotifier: toggle,
+                                    pressEffectController: toggle,
                                   ),
                             ),
                           ),
                           SizedBox(width: 80),
 
                           Expanded(
-                            child: ToggleDropShadow(
+                            child: PressEffect(
                               offset: 4,
-                              dropShadowColor: Color.fromRGBO(229, 229, 229, 1),
-
                               child:
                                   (toggle) => MatchingTiles(
                                     notifier: notifier,
                                     tileValue: shuffledAnswer[i],
                                     isQuestion: false,
-                                    toggleNotifier: toggle,
+                                    pressEffectController: toggle,
                                   ),
                             ),
                           ),
@@ -201,14 +207,12 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
 
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 28),
-                child: ToggleDropShadow(
+                child: PressEffect(
                   offset: 6,
-                  state: false,
-                  dropShadowColor: Color.fromRGBO(17, 117, 163, 1),
                   child:
                       (toggle) => CheckButton(
-                        toggleNotifier: toggle,
-                        buttonState: false,
+                        pressEffectController: toggle,
+                        buttonState: isCompleted,
                       ),
                 ),
               ),
@@ -224,13 +228,13 @@ class MatchingTiles extends StatefulWidget {
   final TileState notifier;
   final String tileValue;
   final bool isQuestion;
-  final ToggleValueNotifier toggleNotifier;
+  final PressEffectNotifier pressEffectController;
   const MatchingTiles({
     super.key,
     required this.notifier,
     required this.tileValue,
     required this.isQuestion,
-    required this.toggleNotifier,
+    required this.pressEffectController,
   });
 
   @override
@@ -243,25 +247,10 @@ class _MatchingTilesState extends State<MatchingTiles> {
   late bool isCorrect;
   late bool isChecked;
   late bool tapState;
-  late ValueNotifier<bool> pressed;
-  late ValueNotifier<Color> shadowStateColor;
-  late ValueNotifier<bool> toggleState;
-
-  void toggleTrigger() {
-    pressed.value = !pressed.value;
-
-    Future.delayed(Duration(milliseconds: 100), () {
-      pressed.value = !pressed.value;
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-
-    pressed = widget.toggleNotifier.pressed;
-    shadowStateColor = widget.toggleNotifier.shadowStateColor;
-    toggleState = widget.toggleNotifier.toggleState;
 
     isSelected =
         widget.tileValue == widget.notifier.selectedQuestion ||
@@ -285,18 +274,26 @@ class _MatchingTilesState extends State<MatchingTiles> {
 
         if (isSelected) {
           if (!isChecked) {
-            shadowStateColor.value = Color.fromRGBO(28, 176, 246, 1);
+            widget.pressEffectController.changeShadowColor(
+              Color.fromRGBO(28, 176, 246, 1),
+            );
           } else {
             if (isCorrect) {
-              shadowStateColor.value = Color.fromRGBO(165, 237, 110, 1);
+              widget.pressEffectController.changeShadowColor(
+                Color.fromRGBO(165, 237, 110, 1),
+              );
             } else {
-              shadowStateColor.value = Color.fromRGBO(255, 178, 178, 1);
+              widget.pressEffectController.changeShadowColor(
+                Color.fromRGBO(255, 178, 178, 1),
+              );
             }
           }
         } else {
-          shadowStateColor.value = Color.fromRGBO(229, 229, 229, 1);
+          widget.pressEffectController.changeShadowColor(
+            Color.fromRGBO(229, 229, 229, 1),
+          );
           if (isDisabled) {
-            toggleState.value = false;
+            widget.pressEffectController.changePressedState(true);
           }
         }
       });
@@ -372,7 +369,7 @@ class _MatchingTilesState extends State<MatchingTiles> {
                   widget.tileValue,
                   widget.isQuestion,
                 );
-                toggleTrigger();
+                widget.pressEffectController.press();
 
                 if (widget.notifier.selectedQuestion != "" &&
                     widget.notifier.selectedAnswer != "") {
@@ -427,170 +424,13 @@ class RadioButton extends StatelessWidget {
           isDisabled || !tapState
               ? null
               : (value) {
-                widget.toggleNotifier.pressed.value =
-                    !widget.toggleNotifier.pressed.value;
-
-                Future.delayed(Duration(milliseconds: 100), () {
-                  widget.toggleNotifier.pressed.value =
-                      !widget.toggleNotifier.pressed.value;
-                });
+                widget.pressEffectController.press();
                 widget.notifier.changeSelected(value, widget.isQuestion);
                 if (widget.notifier.selectedQuestion != "" &&
                     widget.notifier.selectedAnswer != "") {
                   widget.notifier.checkAnswer();
                 }
               },
-    );
-  }
-}
-
-class CheckButton extends StatefulWidget {
-  final ToggleValueNotifier toggleNotifier;
-  final bool buttonState;
-
-  const CheckButton({
-    super.key,
-    required this.toggleNotifier,
-    required this.buttonState,
-  });
-
-  @override
-  State<CheckButton> createState() => _CheckButtonState();
-}
-
-class _CheckButtonState extends State<CheckButton> {
-  late ValueNotifier<bool> pressed;
-
-  @override
-  void initState() {
-    super.initState();
-    pressed = widget.toggleNotifier.pressed;
-    widget.toggleNotifier.changeToggleState(widget.buttonState);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed:
-          widget.buttonState
-              ? () {
-                pressed.value = !pressed.value;
-
-                Future.delayed(Duration(milliseconds: 100), () {
-                  pressed.value = !pressed.value;
-                });
-              }
-              : null,
-      style: TextButton.styleFrom(
-        backgroundColor: Color.fromRGBO(28, 176, 246, 1),
-        foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      ),
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0, 18, 0, 18),
-
-        child: Text(
-          "PERIKSA",
-          style: TextStyle(
-            fontSize: 18,
-            fontFamily: "Jellee",
-            letterSpacing: 2,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ToggleValueNotifier {
-  late ValueNotifier<bool> pressed;
-  late ValueNotifier<Color> shadowStateColor;
-  final Color dropShadowColor;
-  late ValueNotifier<bool> toggleState;
-  final bool state;
-
-  ToggleValueNotifier({required this.dropShadowColor, required this.state}) {
-    shadowStateColor = ValueNotifier<Color>(dropShadowColor);
-    toggleState = ValueNotifier<bool>(state);
-    changeToggleState(state);
-  }
-
-  void changeToggleState(bool newState) {
-    toggleState.value = newState;
-    if (toggleState.value) {
-      pressed = ValueNotifier<bool>(false);
-    } else {
-      pressed = ValueNotifier<bool>(true);
-    }
-  }
-}
-
-class ToggleDropShadow extends StatefulWidget {
-  final double offset;
-  final Color dropShadowColor;
-  final Widget Function(ToggleValueNotifier toggleNotifier) child;
-  final bool state;
-
-  const ToggleDropShadow({
-    super.key,
-    required this.offset,
-    required this.dropShadowColor,
-    required this.child,
-    this.state = true,
-  });
-
-  @override
-  State<ToggleDropShadow> createState() => _ToggleDropShadowState();
-}
-
-class _ToggleDropShadowState extends State<ToggleDropShadow> {
-  late ToggleValueNotifier toggleNotifier;
-  late ValueNotifier<bool> pressed;
-  late ValueNotifier<Color> shadowStateColor;
-  late ValueNotifier<bool> toggleState;
-
-  @override
-  void initState() {
-    super.initState();
-    toggleNotifier = ToggleValueNotifier(
-      dropShadowColor: widget.dropShadowColor,
-      state: widget.state,
-    );
-    pressed = toggleNotifier.pressed;
-    shadowStateColor = toggleNotifier.shadowStateColor;
-    toggleState = toggleNotifier.toggleState;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: pressed,
-      builder:
-          (context, _) => Transform.translate(
-            offset: Offset(0, pressed.value ? widget.offset : 0),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                boxShadow:
-                    toggleState.value
-                        ? [
-                          BoxShadow(
-                            color: shadowStateColor.value,
-                            offset:
-                                pressed.value
-                                    ? Offset(0, 0)
-                                    : Offset(0, widget.offset),
-                          ),
-                        ]
-                        : [],
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: widget.child(toggleNotifier),
-              ),
-            ),
-          ),
     );
   }
 }
