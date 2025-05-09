@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
+import 'package:project_kel2_mfe/Grammar.dart';
 import 'package:project_kel2_mfe/Profile.dart';
 import 'package:project_kel2_mfe/homeContent.dart';
 import 'package:project_kel2_mfe/models/quizQuestion.dart';
@@ -14,13 +15,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Widget> views = [
-    HomeContent(),
-    Golda(),
-    Container(),
-    Container(),
-    Profile_Page(),
-  ];
+  late QuizUnit quizUnit;
+  late List<Widget> views;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    quizUnit = QuizUnit(
+      title: "Halo Nama Saya...",
+      category: ["Simple Present", "Simple Past", "Self-Introduced"],
+    );
+
+    views = [
+      HomeContent(),
+      Golda(),
+      QuizPage(quizStage: quizUnit.stages[0]),
+      GrammarScreen(),
+      Profile_Page(),
+    ];
+  }
 
   Widget currentView = HomeContent();
 
@@ -47,12 +61,12 @@ class _HomePageState extends State<HomePage> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book, color: Colors.purple),
-            label: 'Dictionary',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.book_outlined, color: Colors.red),
             label: 'Lessons',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book, color: Colors.purple),
+            label: 'Dictionary',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.text_fields, color: Colors.red),

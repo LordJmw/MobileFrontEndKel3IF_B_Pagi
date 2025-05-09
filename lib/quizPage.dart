@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_kel2_mfe/homeContent.dart';
 import 'package:project_kel2_mfe/homePage.dart';
 import 'package:project_kel2_mfe/models/quizQuestion.dart';
 
@@ -21,6 +22,19 @@ class _QuizPageState extends State<QuizPage> {
     super.initState();
     listQuiz = widget.quizStage.widgets;
     page = widget.quizStage.pageCounter.page.value;
+
+    widget.quizStage.pageCounter.page.addListener(() {
+      setState(() {
+        if (page == listQuiz.length - 1) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+          );
+        } else {
+          page = widget.quizStage.pageCounter.page.value;
+        }
+      });
+    });
 
     widget.quizStage.pageCounter.page.addListener(() {
       setState(() {
