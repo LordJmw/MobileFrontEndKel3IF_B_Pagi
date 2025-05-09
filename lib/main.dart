@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_kel2_mfe/feat/register.dart';
-import 'package:project_kel2_mfe/homePage.dart';
+import 'package:utsfrontend/feat/register.dart';
 
 void main() {
   runApp(const MyApp());

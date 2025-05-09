@@ -1,9 +1,9 @@
 // import 'package:auth/register.dart';
 import 'package:flutter/material.dart';
 // import 'package:auth/main.dart';
-import 'package:project_kel2_mfe/feat/register.dart';
-import 'package:project_kel2_mfe/homePage.dart';
-import 'package:project_kel2_mfe/main.dart';
+import 'package:utsfrontend/feat/register.dart';
+import 'package:utsfrontend/homePage.dart';
+import 'package:utsfrontend/main.dart';
 
 class LoginPage extends StatefulWidget {
   @override

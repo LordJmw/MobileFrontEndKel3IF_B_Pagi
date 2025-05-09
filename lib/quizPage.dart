@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_kel2_mfe/homeContent.dart';
-import 'package:project_kel2_mfe/homePage.dart';
-import 'package:project_kel2_mfe/models/quizQuestion.dart';
+import 'package:utsfrontend/homeContent.dart';
+import 'package:utsfrontend/homePage.dart';
+import 'package:utsfrontend/models/quizQuestion.dart';
 
 class QuizPage extends StatefulWidget {
   final QuizStage quizStage;
@@ -36,10 +36,10 @@ class _QuizPageState extends State<QuizPage> {
       });
     });
 
-    widget.quizStage.pageCounter.page.addListener(() {
+    widget.quizStage.pageCounter.isCompleted.addListener(() {
       setState(() {
         if (widget.quizStage.pageCounter.isCompleted.value) {
-          progress += .2;
+          progress += .333;
         }
       });
     });
