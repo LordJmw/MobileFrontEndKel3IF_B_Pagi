@@ -145,79 +145,77 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Pilih pasangan yang cocok",
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontFamily: "Jellee",
-                      color: Color.fromRGBO(75, 75, 75, 1),
-                    ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "Pilih pasangan yang cocok",
+                  style: TextStyle(
+                    fontSize: 26,
+                    fontFamily: "Jellee",
+                    color: Color.fromRGBO(75, 75, 75, 1),
                   ),
                 ),
+              ),
 
-                Column(
-                  children: [
-                    for (int i = 0; i < widget.pairs.length; i++)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 28),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: PressEffect(
-                                offset: 4,
-                                child:
-                                    (toggle) => MatchingTiles(
-                                      notifier: notifier,
-                                      tileValue: shuffledQuestion[i],
-                                      isQuestion: true,
-                                      pressEffectController: toggle,
-                                    ),
-                              ),
+              Column(
+                children: [
+                  for (int i = 0; i < widget.pairs.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 28),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: PressEffect(
+                              offset: 4,
+                              child:
+                                  (toggle) => MatchingTiles(
+                                    notifier: notifier,
+                                    tileValue: shuffledQuestion[i],
+                                    isQuestion: true,
+                                    pressEffectController: toggle,
+                                  ),
                             ),
-                            SizedBox(width: 80),
+                          ),
+                          SizedBox(width: 80),
 
-                            Expanded(
-                              child: PressEffect(
-                                offset: 4,
-                                child:
-                                    (toggle) => MatchingTiles(
-                                      notifier: notifier,
-                                      tileValue: shuffledAnswer[i],
-                                      isQuestion: false,
-                                      pressEffectController: toggle,
-                                    ),
-                              ),
+                          Expanded(
+                            child: PressEffect(
+                              offset: 4,
+                              child:
+                                  (toggle) => MatchingTiles(
+                                    notifier: notifier,
+                                    tileValue: shuffledAnswer[i],
+                                    isQuestion: false,
+                                    pressEffectController: toggle,
+                                  ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                  ],
-                ),
+                    ),
+                ],
+              ),
 
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 28),
-                  child: PressEffect(
-                    offset: 6,
-                    child:
-                        (toggle) => CheckButton(
-                          pressEffectController: toggle,
-                          buttonState: isCompleted,
-                          label: buttonText,
-                        ),
-                  ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 28),
+                child: PressEffect(
+                  offset: 6,
+                  child:
+                      (toggle) => CheckButton(
+                        pressEffectController: toggle,
+                        buttonState: isCompleted,
+                        label: buttonText,
+                      ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -304,7 +302,7 @@ class _MatchingTilesState extends State<MatchingTiles> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.fromLTRB(8, 10, 8, 10),
+      contentPadding: EdgeInsets.fromLTRB(8, 6, 8, 6),
       trailing:
           widget.isQuestion
               ? RadioButton(
