@@ -13,6 +13,7 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   late List<Widget> listQuiz;
   late int page;
+  double progress = 0;
 
   @override
   void initState() {
@@ -23,15 +24,8 @@ class _QuizPageState extends State<QuizPage> {
 
     widget.quizStage.pageCounter.page.addListener(() {
       setState(() {
-        if (page == listQuiz.length - 1) {
-          print(1);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
-          );
-        } else {
-          page = widget.quizStage.pageCounter.page.value;
-          print(page);
+        if (widget.quizStage.pageCounter.isCompleted.value) {
+          progress += .2;
         }
       });
     });
@@ -43,10 +37,10 @@ class _QuizPageState extends State<QuizPage> {
       appBar: AppBar(
         leading: Icon(Icons.clear, size: 50, color: Colors.grey[400]),
         title: LinearProgressIndicator(
-          value: 0.5,
+          value: progress,
           minHeight: 18,
           borderRadius: BorderRadius.circular(100),
-          color: Colors.orange[500],
+          color: Color.fromRGBO(28, 176, 246, 1),
           backgroundColor: Color.fromRGBO(229, 229, 229, 1),
         ),
       ),

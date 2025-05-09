@@ -29,6 +29,7 @@ class _TextfieldState extends State<Textfield> {
     setState(() {
       if (widget.correctAnswer == answer.text.toLowerCase()) {
         buttonText = "JAWABAN ANDA BENAR";
+        widget.pageCounter.completed();
         Future.delayed(Duration(seconds: 1), () {
           widget.pageCounter.nextPage();
         });

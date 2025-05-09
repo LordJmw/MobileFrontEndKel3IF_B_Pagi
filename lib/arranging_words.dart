@@ -40,6 +40,7 @@ class _ArrangingWordsState extends State<ArrangingWords> {
     setState(() {
       if (UserAnswer.toLowerCase() == widget.answers.toLowerCase()) {
         buttonText = "JAWABAN ANDA BENAR";
+        widget.pageCounter.completed();
         Future.delayed(Duration(seconds: 1), () {
           widget.pageCounter.nextPage();
         });

@@ -95,6 +95,7 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
         if (notifier.completedQuestion.length == widget.pairs.length * 2) {
           isCompleted = true;
           buttonText = "JAWABAN ANDA BENAR";
+          widget.pageCounter.completed();
           Future.delayed(Duration(seconds: 1), () {
             widget.pageCounter.nextPage();
           });
