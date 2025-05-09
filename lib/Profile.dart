@@ -10,6 +10,7 @@ class Profile_Page extends StatefulWidget {
 }
 
 class _Profile_PageState extends State<Profile_Page> {
+  int _radioValue = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -335,6 +336,33 @@ class _Profile_PageState extends State<Profile_Page> {
                     ],
                   ),
                   SizedBox(height: 5),
+
+                  Row(
+                    children: [
+                      Radio(
+                        value: 0,
+                        groupValue: _radioValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _radioValue = value!;
+                          });
+                        },
+                      ),
+                      Text("Semua"),
+                      Radio(
+                        value: 1,
+                        groupValue: _radioValue,
+                        onChanged: (value) {
+                          setState(() {
+                            _radioValue = value!;
+                          });
+                        },
+                      ),
+                      Text("30 Hari Terakhir"),
+                    ],
+                  ),
+
+                  SizedBox(height: 15),
 
                   Row(
                     children: [
