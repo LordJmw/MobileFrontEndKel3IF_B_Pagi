@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
+import 'package:project_kel2_mfe/Grammer.dart';
 import 'package:project_kel2_mfe/Profile.dart';
 import 'package:project_kel2_mfe/homeContent.dart';
 import 'package:project_kel2_mfe/models/quizQuestion.dart';
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       HomeContent(),
       Golda(),
       QuizPage(quizStage: quizUnit.stages[0]),
-      Container(),
+      GrammarScreen(),
       Profile_Page(),
     ];
   }
