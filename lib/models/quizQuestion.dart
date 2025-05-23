@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:utsfrontend/arranging_words.dart';
-import 'package:utsfrontend/matching.dart';
-import 'package:utsfrontend/textfield.dart';
+import 'package:tugas2/arranging_words.dart';
+import 'package:tugas2/matching.dart';
+import 'package:tugas2/textfield.dart';
 
 class QuizUnit {
   final String title;

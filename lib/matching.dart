@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:utsfrontend/components/check_button.dart';
-import 'package:utsfrontend/components/press_effect.dart';
-import 'package:utsfrontend/models/quizQuestion.dart';
+import 'package:tugas2/components/check_button.dart';
+import 'package:tugas2/components/press_effect.dart';
+import 'package:tugas2/models/quizQuestion.dart';
 
 class TileState extends ChangeNotifier {
   final Map<String, String> listQuestion;
@@ -94,9 +94,15 @@ class _MatchingQuestionState extends State<MatchingQuestion> {
       setState(() {
         if (notifier.completedQuestion.length == widget.pairs.length * 2) {
           isCompleted = true;
-          buttonText = "JAWABAN ANDA BENAR";
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Jawaban Anda Benar"),
+              backgroundColor: const Color.fromARGB(255, 2, 201, 9),
+              duration: Duration(seconds: 3),
+            ),
+          );
           widget.pageCounter.completed();
-          Future.delayed(Duration(seconds: 1), () {
+          Future.delayed(Duration(seconds: 4), () {
             widget.pageCounter.nextPage();
           });
         }

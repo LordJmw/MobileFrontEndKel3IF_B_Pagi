@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
-import 'package:utsfrontend/Grammar.dart';
-import 'package:utsfrontend/Profile.dart';
-import 'package:utsfrontend/homeContent.dart';
-import 'package:utsfrontend/models/quizQuestion.dart';
-import 'package:utsfrontend/quizPage.dart';
-import 'package:utsfrontend/zbhal.dart';
+import 'package:tugas2/Grammar.dart';
+import 'package:tugas2/Profile.dart';
+import 'package:tugas2/homeContent.dart';
+import 'package:tugas2/models/quizQuestion.dart';
+import 'package:tugas2/quizPage.dart';
+import 'package:tugas2/zbhal.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

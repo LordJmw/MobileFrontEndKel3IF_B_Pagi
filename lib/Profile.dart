@@ -11,6 +11,7 @@ class Profile_Page extends StatefulWidget {
 
 class _Profile_PageState extends State<Profile_Page> {
   int _radioValue = 0;
+  String name = "John Rick";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,16 +28,79 @@ class _Profile_PageState extends State<Profile_Page> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [Icon(Icons.settings)],
+                    children: [
+                      TextButton.icon(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                icon: Icon(Icons.edit),
+                                content: SizedBox(
+                                  height: 30,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Text("Edit Your Account Name"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                    ),
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(
+                                        color: const Color.fromARGB(
+                                          255,
+                                          47,
+                                          90,
+                                          125,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color.fromARGB(
+                                        255,
+                                        47,
+                                        90,
+                                        125,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Confirm",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        label: Text("Edit Name"),
+                        icon: Icon(Icons.edit),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 20),
                   CircleAvatar(
                     radius: 60,
-                    backgroundImage: AssetImage("icons8-john-wick-64.png"),
+                    backgroundImage: NetworkImage(
+                      "https://img.icons8.com/?size=100&id=wNKfod2b7pUn&format=png&color=000000",
+                    ),
                   ),
                   SizedBox(height: 7),
                   Text(
-                    "John Rick",
+                    name,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
                   ),
                   SizedBox(height: 15),

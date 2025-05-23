@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utsfrontend/components/press_effect.dart';
+import 'package:tugas2/components/press_effect.dart';
 
 class CheckButton extends StatefulWidget {
   final PressEffectNotifier pressEffectController;

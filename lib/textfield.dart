@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:utsfrontend/components/check_button.dart';
-import 'package:utsfrontend/components/press_effect.dart';
-import 'package:utsfrontend/models/quizQuestion.dart';
+import 'package:tugas2/components/check_button.dart';
+import 'package:tugas2/components/press_effect.dart';
+import 'package:tugas2/models/quizQuestion.dart';
 
 class Textfield extends StatefulWidget {
   final Image image;
@@ -28,14 +28,26 @@ class _TextfieldState extends State<Textfield> {
   void checkAnswer() {
     setState(() {
       if (widget.correctAnswer == answer.text.toLowerCase()) {
-        buttonText = "JAWABAN ANDA BENAR";
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Jawaban Anda Benar"),
+            backgroundColor: const Color.fromARGB(255, 2, 201, 9),
+            duration: Duration(seconds: 3),
+          ),
+        );
         widget.pageCounter.completed();
-        Future.delayed(Duration(seconds: 1), () {
+        Future.delayed(Duration(seconds: 4), () {
           widget.pageCounter.nextPage();
         });
       } else {
-        buttonText = "JAWABAN ANDA SALAH";
-        Future.delayed(Duration(seconds: 1), () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Jawaban Anda Salah"),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          ),
+        );
+        Future.delayed(Duration(seconds: 4), () {
           setState(() {
             buttonText = "PERIKSA";
           });

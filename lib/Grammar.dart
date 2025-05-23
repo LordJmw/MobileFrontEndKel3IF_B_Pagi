@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utsfrontend/DetailGrammar.dart';
+import 'package:tugas2/DetailGrammar.dart';
 
 class GrammarScreen extends StatelessWidget {
   const GrammarScreen({super.key});

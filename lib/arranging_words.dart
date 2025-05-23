@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:utsfrontend/components/check_button.dart';
-import 'package:utsfrontend/components/press_effect.dart';
-import 'package:utsfrontend/models/quizQuestion.dart';
+import 'package:tugas2/components/check_button.dart';
+import 'package:tugas2/components/press_effect.dart';
+import 'package:tugas2/models/quizQuestion.dart';
 
 class ArrangingWords extends StatefulWidget {
   final List<String> words;
@@ -39,14 +39,25 @@ class _ArrangingWordsState extends State<ArrangingWords> {
     String UserAnswer = selectedWords.join(" ");
     setState(() {
       if (UserAnswer.toLowerCase() == widget.answers.toLowerCase()) {
-        buttonText = "JAWABAN ANDA BENAR";
-        widget.pageCounter.completed();
-        Future.delayed(Duration(seconds: 1), () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Jawaban Anda Benar"),
+            backgroundColor: const Color.fromARGB(255, 2, 201, 9),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        Future.delayed(Duration(seconds: 4), () {
           widget.pageCounter.nextPage();
         });
       } else {
-        buttonText = "JAWABAN ANDA SALAH";
-        Future.delayed(Duration(seconds: 1), () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Jawaban Anda Salah"),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          ),
+        );
+        Future.delayed(Duration(seconds: 4), () {
           setState(() {
             buttonText = "PERIKSA";
           });
@@ -77,7 +88,9 @@ class _ArrangingWordsState extends State<ArrangingWords> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 10),
-                  child: Image.asset("assets/icons8-john-wick-64.png"),
+                  child: Image.network(
+                    "https://img.icons8.com/?size=100&id=wNKfod2b7pUn&format=png&color=000000",
+                  ),
                 ),
 
                 Padding(

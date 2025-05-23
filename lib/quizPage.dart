@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:utsfrontend/homeContent.dart';
-import 'package:utsfrontend/homePage.dart';
-import 'package:utsfrontend/models/quizQuestion.dart';
+import 'package:tugas2/homeContent.dart';
+import 'package:tugas2/homePage.dart';
+import 'package:tugas2/models/quizQuestion.dart';
 
 class QuizPage extends StatefulWidget {
   final QuizStage quizStage;
