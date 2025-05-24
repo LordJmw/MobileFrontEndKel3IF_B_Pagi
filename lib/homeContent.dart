@@ -46,6 +46,25 @@ class _HomeContentState extends State<HomeContent> {
   );
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    //run ketika pertama kali di load pakai widgetsBinding.instance.addPostFrameCallBack
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Hi! Progress mu sudah 17%, pertahankan kerja bagusmu!",
+          ),
+          backgroundColor: const Color.fromARGB(255, 51, 155, 240),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 236, 235, 235),

@@ -14,8 +14,8 @@ class QuizUnit {
         QuizStage(
           widgetBuilders: [
             (pageCounter) => Textfield(
-              image: Image.asset(
-                'assets/images/kelinci.png',
+              image: Image.network(
+                'https://png.pngtree.com/png-clipart/20190925/original/pngtree-rabbit_cartoon-png-image_4992696.jpg',
                 width: 200,
                 height: 200,
               ),

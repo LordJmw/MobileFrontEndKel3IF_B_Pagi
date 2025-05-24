@@ -12,14 +12,21 @@ class Profile_Page extends StatefulWidget {
 class _Profile_PageState extends State<Profile_Page> {
   int _radioValue = 0;
   String name = "John Rick";
+  TextEditingController newName = TextEditingController(text: "");
+
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    bool isLargeScreen = screenWidth > 600;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 236, 235, 235),
       // appBar: AppBar(title: Text("Profile")),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
+            // constraints: BoxConstraints(
+            //   maxWidth: isLargeScreen ? 600 : screenWidth * 0.9,
+            // ),
             color: Colors.white,
             width: min(MediaQuery.of(context).size.width * 0.9, 500),
             child: Padding(
@@ -36,8 +43,8 @@ class _Profile_PageState extends State<Profile_Page> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 icon: Icon(Icons.edit),
-                                content: SizedBox(
-                                  height: 30,
+                                content: SingleChildScrollView(
+                                  // height: 50,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -45,41 +52,61 @@ class _Profile_PageState extends State<Profile_Page> {
                                       Center(
                                         child: Text("Edit Your Account Name"),
                                       ),
+                                      TextField(
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          hintText: "Masukkan Nama Baru Anda",
+                                          hintStyle: TextStyle(fontSize: 12),
+                                        ),
+                                        controller: newName,
+                                      ),
                                     ],
                                   ),
                                 ),
                                 actions: [
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                    ),
-                                    child: Text(
-                                      "Cancel",
-                                      style: TextStyle(
-                                        color: const Color.fromARGB(
-                                          255,
-                                          47,
-                                          90,
-                                          125,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white,
+                                        ),
+                                        child: Text(
+                                          "Cancel",
+                                          style: TextStyle(
+                                            color: const Color.fromARGB(
+                                              255,
+                                              47,
+                                              90,
+                                              125,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color.fromARGB(
-                                        255,
-                                        47,
-                                        90,
-                                        125,
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            name = newName.text;
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color.fromARGB(
+                                            255,
+                                            47,
+                                            90,
+                                            125,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          "Confirm",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
-                                    ),
-                                    child: Text(
-                                      "Confirm",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
+                                    ],
                                   ),
                                 ],
                               );
@@ -139,7 +166,12 @@ class _Profile_PageState extends State<Profile_Page> {
                         Row(
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.38,
+                              width:
+                                  isLargeScreen
+                                      ? MediaQuery.of(context).size.width *
+                                          0.145
+                                      : MediaQuery.of(context).size.width *
+                                          0.38,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: const Color.fromARGB(
@@ -200,7 +232,12 @@ class _Profile_PageState extends State<Profile_Page> {
                             ),
                             SizedBox(width: 8),
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.38,
+                              width:
+                                  isLargeScreen
+                                      ? MediaQuery.of(context).size.width *
+                                          0.145
+                                      : MediaQuery.of(context).size.width *
+                                          0.38,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: const Color.fromARGB(
@@ -266,7 +303,12 @@ class _Profile_PageState extends State<Profile_Page> {
                         Row(
                           children: [
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.38,
+                              width:
+                                  isLargeScreen
+                                      ? MediaQuery.of(context).size.width *
+                                          0.145
+                                      : MediaQuery.of(context).size.width *
+                                          0.38,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: const Color.fromARGB(
@@ -327,7 +369,12 @@ class _Profile_PageState extends State<Profile_Page> {
                             ),
                             SizedBox(width: 8),
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.38,
+                              width:
+                                  isLargeScreen
+                                      ? MediaQuery.of(context).size.width *
+                                          0.145
+                                      : MediaQuery.of(context).size.width *
+                                          0.38,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: const Color.fromARGB(
@@ -439,7 +486,10 @@ class _Profile_PageState extends State<Profile_Page> {
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        width: MediaQuery.of(context).size.width * 0.26,
+                        width:
+                            isLargeScreen
+                                ? MediaQuery.of(context).size.width * 0.095
+                                : MediaQuery.of(context).size.width * 0.26,
                         child: Padding(
                           padding: EdgeInsets.all(10),
                           child: Column(
@@ -479,7 +529,10 @@ class _Profile_PageState extends State<Profile_Page> {
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        width: MediaQuery.of(context).size.width * 0.26,
+                        width:
+                            isLargeScreen
+                                ? MediaQuery.of(context).size.width * 0.095
+                                : MediaQuery.of(context).size.width * 0.26,
                         child: Padding(
                           padding: EdgeInsets.all(10),
                           child: Column(
@@ -518,7 +571,10 @@ class _Profile_PageState extends State<Profile_Page> {
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        width: MediaQuery.of(context).size.width * 0.26,
+                        width:
+                            isLargeScreen
+                                ? MediaQuery.of(context).size.width * 0.095
+                                : MediaQuery.of(context).size.width * 0.26,
                         child: Padding(
                           padding: EdgeInsets.all(10),
                           child: Column(
