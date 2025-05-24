@@ -43,26 +43,27 @@ class _GoldaState extends State<Golda> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Engliboo",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.lightBlue,
-                  ),
-                ),
-                Icon(Icons.search, color: Colors.lightBlue),
-              ],
-            ),
-            SizedBox(height: 20),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text(
+            //       "Engliboo",
+            //       style: TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         color: Colors.lightBlue,
+            //       ),
+            //     ),
+            //     Icon(Icons.search, color: Colors.lightBlue),
+            //   ],
+            // ),
+            SizedBox(height: 10),
             Text(
               "Ayo, Latih kata - kata bahasa Inggrismu!",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),

@@ -19,7 +19,7 @@ class _Profile_PageState extends State<Profile_Page> {
     final screenWidth = MediaQuery.of(context).size.width;
     bool isLargeScreen = screenWidth > 600;
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 236, 235, 235),
+      backgroundColor: Colors.white,
       // appBar: AppBar(title: Text("Profile")),
       body: SingleChildScrollView(
         child: Center(
