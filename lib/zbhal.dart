@@ -134,6 +134,12 @@ class _GoldaState extends State<Golda> {
                                 content: Text(
                                   "pengurutan berdasarkan abjad A-Z",
                                 ),
+                                backgroundColor: const Color.fromARGB(
+                                  255,
+                                  51,
+                                  155,
+                                  240,
+                                ),
                               ),
                             );
                             vocabulary.sort(
@@ -144,6 +150,12 @@ class _GoldaState extends State<Golda> {
                               SnackBar(
                                 content: Text(
                                   "pengurutan berdasarkan kata yang baru dipelajari",
+                                ),
+                                backgroundColor: const Color.fromARGB(
+                                  255,
+                                  51,
+                                  155,
+                                  240,
                                 ),
                               ),
                             );
