@@ -64,9 +64,9 @@ class _HomeContentState extends State<HomeContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 236, 235, 235),
+      backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
         child: SingleChildScrollView(
           child:
           //constraint itu seberapa besar widget bisa ambil tempat, make max untuk tau size layar
@@ -81,75 +81,75 @@ class _HomeContentState extends State<HomeContent> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   spacing: 5,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              "Engliboo",
-                              style: TextStyle(
-                                color: const Color.fromARGB(255, 94, 175, 241),
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: 10),
-                                  child: Text(
-                                    "Level 1",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Expanded(
+                    //       flex: 1,
+                    //       child: Padding(
+                    //         padding: EdgeInsets.all(10),
+                    //         child: Text(
+                    //           "Engliboo",
+                    //           style: TextStyle(
+                    //             color: const Color.fromARGB(255, 94, 175, 241),
+                    //             fontSize: 20,
+                    //             fontWeight: FontWeight.bold,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       flex: 3,
+                    //       child: Padding(
+                    //         padding: EdgeInsets.all(10),
+                    //         child: Row(
+                    //           mainAxisAlignment: MainAxisAlignment.end,
+                    //           children: [
+                    //             Padding(
+                    //               padding: EdgeInsets.only(right: 10),
+                    //               child: Text(
+                    //                 "Level 1",
+                    //                 style: TextStyle(
+                    //                   color: Colors.black,
+                    //                   fontWeight: FontWeight.bold,
+                    //                   fontSize: 20,
+                    //                 ),
+                    //               ),
+                    //             ),
 
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.15,
-                                  height: 20,
-                                  child: LinearProgressIndicator(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(40),
-                                    ),
-                                    color: const Color.fromARGB(
-                                      255,
-                                      217,
-                                      217,
-                                      217,
-                                    ),
-                                    value: 0.2,
-                                    valueColor: AlwaysStoppedAnimation(
-                                      const Color.fromARGB(255, 51, 155, 240),
-                                    ),
-                                  ),
-                                ),
-                                TextButton.icon(
-                                  onPressed: null,
-                                  label: Text("5"),
-                                  icon: Icon(Icons.favorite, color: Colors.red),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    //             Container(
+                    //               width:
+                    //                   MediaQuery.of(context).size.width * 0.15,
+                    //               height: 20,
+                    //               child: LinearProgressIndicator(
+                    //                 borderRadius: BorderRadius.all(
+                    //                   Radius.circular(40),
+                    //                 ),
+                    //                 color: const Color.fromARGB(
+                    //                   255,
+                    //                   217,
+                    //                   217,
+                    //                   217,
+                    //                 ),
+                    //                 value: 0.2,
+                    //                 valueColor: AlwaysStoppedAnimation(
+                    //                   const Color.fromARGB(255, 51, 155, 240),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             TextButton.icon(
+                    //               onPressed: null,
+                    //               label: Text("5"),
+                    //               icon: Icon(Icons.favorite, color: Colors.red),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(0),
                       child: Container(
                         width: double.infinity,
 
@@ -235,10 +235,7 @@ class _HomeContentState extends State<HomeContent> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      ),
+                      padding: EdgeInsets.symmetric(vertical: 5),
                       child: Column(
                         spacing: 10,
                         children:
