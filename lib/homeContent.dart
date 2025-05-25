@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import "package:font_awesome_flutter/font_awesome_flutter.dart";
-import 'package:tugas2/Profile.dart';
 import 'package:tugas2/models/quizQuestion.dart';
 import 'package:tugas2/quizPage.dart';
-import 'package:tugas2/zbhal.dart';
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key});

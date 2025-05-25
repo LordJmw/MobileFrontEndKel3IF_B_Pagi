@@ -128,10 +128,24 @@ class _GoldaState extends State<Golda> {
                         setState(() {
                           selectedOption = value!;
                           if (value == 'Berdasarkan abjad') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "pengurutan berdasarkan abjad A-Z",
+                                ),
+                              ),
+                            );
                             vocabulary.sort(
                               (a, b) => a['en']!.compareTo(b['en']!),
                             );
                           } else if (value == "Baru dipelajari") {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "pengurutan berdasarkan kata yang baru dipelajari",
+                                ),
+                              ),
+                            );
                             vocabulary = List<Map<String, String>>.from(
                               Initialvocabulary,
                             );
