@@ -12,6 +12,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
+  TextEditingController email = TextEditingController(text: "");
+  TextEditingController password = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: 290,
                 height: 40,
                 child: TextFormField(
+                  controller: email,
                   decoration: InputDecoration(
                     labelText: 'Email',
                     enabledBorder: OutlineInputBorder(
@@ -63,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 40,
                 child: TextFormField(
                   obscureText: _obscureText,
+                  controller: password,
                   decoration: InputDecoration(
                     labelText: 'Kata Sandi',
                     enabledBorder: OutlineInputBorder(
@@ -109,6 +113,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: TextButton(
                     onPressed: () {
+                      if (email.text.isEmpty || password.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Harap Isi Semua Field"),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return;
+                      }
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

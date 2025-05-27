@@ -92,11 +92,12 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderSide: BorderSide(color: Colors.blue, width: 0.5),
                       ),
                     ),
+
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Email tidak boleh kosong';
                       } else if (!value.contains('@')) {
-                        return 'mohon gunakan alamat email yang valid';
+                        return 'Mohon gunakan alamat email yang valid';
                       }
                       return null;
                     },
@@ -129,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Kata sandi tidak boleh kosong';
+                        return 'Password Tidak Boleh Kosong';
                       }
                       _password = value;
                       return null;
@@ -183,7 +184,19 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ? null
                                 : "Cek Jika Sudah Membaca Ketentuan dan Kebijakan Privasi";
                       });
+
                       if (_formKey.currentState!.validate()) {
+                        if (!_isChecked) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Harap Ceklis Jika Sudah Membaca Ketentuan dan Kebijakan Privasi",
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                          return;
+                        }
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => LoginPage()),
@@ -318,15 +331,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     //checkbox tidak dicek
                   ],
                 ),
-                if (_chekboxUnchecked != null)
-                  Text(
-                    _chekboxUnchecked!,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: Colors.red,
-                      fontSize: 12,
-                    ),
-                  ),
+                // if (_chekboxUnchecked != null)
+                //   Text(
+                //     _chekboxUnchecked!,
+                //     style: TextStyle(
+                //       fontFamily: "Poppins",
+                //       color: Colors.red,
+                //       fontSize: 12,
+                //     ),
+                //   ),
               ],
             ),
           ),

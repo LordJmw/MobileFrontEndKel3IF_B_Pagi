@@ -125,7 +125,7 @@ class GrammarCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Row(
                     children: [
                       const Icon(Icons.book, color: Colors.blue),
@@ -141,7 +141,7 @@ class GrammarCard extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
