@@ -4,6 +4,8 @@ import 'package:tugas2/Profile.dart';
 import 'package:tugas2/homeContent.dart';
 import 'package:tugas2/models/quizQuestion.dart';
 import 'package:tugas2/quizPage.dart';
+import 'package:tugas2/schedule.dart';
+import 'package:tugas2/scheduleTab.dart';
 import 'package:tugas2/zbhal.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,6 +42,7 @@ class _HomePageState extends State<HomePage> {
     "vocabulary": Golda(),
     "grammar": GrammarScreen(),
     "profile": Profile_Page(),
+    "Jadwal Belajar Saya": ScheduleTab(),
   };
   ValueNotifier<String> selectedPage = ValueNotifier("home");
 
@@ -160,6 +163,11 @@ class _HomePageState extends State<HomePage> {
               selectedPage: selectedPage,
               label: "grammar",
               icon: Icons.text_fields,
+            ),
+            ListTileDrawer(
+              selectedPage: selectedPage,
+              label: "Jadwal Belajar Saya",
+              icon: Icons.date_range,
             ),
             ListTileDrawer(
               selectedPage: selectedPage,
