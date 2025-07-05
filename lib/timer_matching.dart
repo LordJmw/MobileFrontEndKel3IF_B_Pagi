@@ -33,12 +33,12 @@ class TileState extends ChangeNotifier {
     selectedAnswer = "";
     selectedQuestion = "";
     notifyListeners();
-  }
 
-  void clear() {
-    checkedSet = {};
-    correctSet = {};
-    notifyListeners();
+    Future.delayed(Duration(milliseconds: 500), () {
+      checkedSet = {};
+      correctSet = {};
+      notifyListeners();
+    });
   }
 
   TileState({required this.listQuestion});
@@ -185,6 +185,7 @@ class _MatchingTilesState extends State<MatchingTiles> {
   bool isDisabled = false;
   bool isCorrect = false;
   bool isChecked = false;
+  bool isCompleted = false;
 
   @override
   void initState() {
@@ -197,6 +198,7 @@ class _MatchingTilesState extends State<MatchingTiles> {
             widget.tileValue == widget.notifier.selectedAnswer;
         isCorrect = widget.notifier.correctSet.contains(widget.tileValue);
         isChecked = widget.notifier.checkedSet.contains(widget.tileValue);
+        isCompleted = widget.notifier.completedSet.contains(widget.tileValue);
 
         if (isSelected) {
           widget.pressEffectController.changeShadowColor(
@@ -213,23 +215,15 @@ class _MatchingTilesState extends State<MatchingTiles> {
               Color.fromRGBO(255, 178, 178, 1),
             );
           }
-          Future.delayed(Duration(milliseconds: 500), () {
-            setState(() {
-              if (!isCorrect) {
-                print(isChecked);
-                isDisabled = false;
-              }
-              Future.delayed(Duration(milliseconds: 1), () {
-                widget.notifier.clear();
-              });
-            });
-          });
-        } else if (isDisabled) {
+        } else if (isDisabled && isCompleted) {
           widget.pressEffectController.changePressedState(true);
         } else {
-          widget.pressEffectController.changeShadowColor(
-            Color.fromRGBO(229, 229, 229, 1),
-          );
+          setState(() {
+            widget.pressEffectController.changeShadowColor(
+              Color.fromRGBO(229, 229, 229, 1),
+            );
+            isDisabled = false;
+          });
         }
       });
     });
