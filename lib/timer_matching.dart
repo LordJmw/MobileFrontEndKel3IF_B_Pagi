@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:tugas2/components/check_button.dart';
 import 'package:tugas2/components/press_effect.dart';
-import 'package:tugas2/models/quizQuestion.dart';
 
 class TileState extends ChangeNotifier {
-  final Map<String, String> listQuestion;
+  final Map<String, String> pairs;
+  final List<String> nextQuestion;
+  final List<String> nextAnswer;
+  final StopWatchTimer longDelay = StopWatchTimer(
+    mode: StopWatchMode.countDown,
+    presetMillisecond: StopWatchTimer.getMilliSecFromSecond(5),
+  );
   Set<String> completedSet = {};
   Set<String> correctSet = {};
   Set<String> checkedSet = {};
   String selectedQuestion = "";
   String selectedAnswer = "";
+  Map<String, String> newPair = {};
 
   void changeSelected(value, isQuestion) {
     if (isQuestion) {
@@ -21,11 +28,15 @@ class TileState extends ChangeNotifier {
   }
 
   void checkAnswer() {
-    if (listQuestion[selectedQuestion] == selectedAnswer) {
+    if (pairs[selectedQuestion] == selectedAnswer) {
       correctSet.add(selectedQuestion);
       correctSet.add(selectedAnswer);
       completedSet.add(selectedAnswer);
       completedSet.add(selectedQuestion);
+
+      if (completedSet.length < pairs.length * 2) {
+        changeQuestion(selectedQuestion, selectedAnswer);
+      }
     }
 
     checkedSet.add(selectedQuestion);
@@ -41,7 +52,25 @@ class TileState extends ChangeNotifier {
     });
   }
 
-  TileState({required this.listQuestion});
+  void changeQuestion(String prevQuestion, String prevAnswer) {
+    longDelay.onStartTimer();
+    String question = "";
+    String answer = "";
+    
+    longDelay.fetchStopped.listen(
+      (value) {
+        question = nextQuestion[0];
+        answer = nextAnswer[0];
+        newPair.addEntries({prevQuestion: })
+      },
+    );
+  }
+
+  TileState({
+    required this.pairs,
+    required this.nextQuestion,
+    required this.nextAnswer,
+  });
 }
 
 class TimerMatching extends StatefulWidget {
@@ -54,17 +83,31 @@ class TimerMatching extends StatefulWidget {
 
 class _TimerMatchingState extends State<TimerMatching> {
   late TileState notifier;
-  List<String> shuffledQuestion = [];
-  List<String> shuffledAnswer = [];
+  List<String> nextQuestion = [];
+  List<String> nextAnswer = [];
+  Map<String, String> initialPairs = {};
+  Map<String, String> nextPairs = {};
+  List<String> questionPlaceholder = [];
+  List<String> answerPlaceholder = [];
+
   bool isCompleted = false;
   String buttonText = "PERIKSA";
 
   @override
   void initState() {
     super.initState();
-    shuffledQuestion = widget.pairs.keys.toList()..shuffle();
-    shuffledAnswer = widget.pairs.values.toList()..shuffle();
-    notifier = TileState(listQuestion: widget.pairs);
+    initialPairs = Map.fromEntries(widget.pairs.entries.take(5));
+    nextPairs = Map.fromEntries(widget.pairs.entries.skip(5));
+    nextQuestion = nextPairs.keys.toList();
+    nextAnswer = nextPairs.values.toList();
+    questionPlaceholder = initialPairs.keys.toList()..shuffle();
+    answerPlaceholder = initialPairs.values.toList()..shuffle();
+
+    notifier = TileState(
+      pairs: widget.pairs,
+      nextAnswer: nextAnswer,
+      nextQuestion: nextQuestion,
+    );
 
     notifier.addListener(() {
       setState(() {
@@ -105,7 +148,7 @@ class _TimerMatchingState extends State<TimerMatching> {
 
               Column(
                 children: [
-                  for (int i = 0; i < widget.pairs.length; i++)
+                  for (int i = 0; i < 5; i++)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 28),
                       child: Row(
@@ -117,7 +160,7 @@ class _TimerMatchingState extends State<TimerMatching> {
                               child:
                                   (toggle) => MatchingTiles(
                                     notifier: notifier,
-                                    tileValue: shuffledQuestion[i],
+                                    init_tileValue: questionPlaceholder[i],
                                     isQuestion: true,
                                     pressEffectController: toggle,
                                   ),
@@ -131,7 +174,7 @@ class _TimerMatchingState extends State<TimerMatching> {
                               child:
                                   (toggle) => MatchingTiles(
                                     notifier: notifier,
-                                    tileValue: shuffledAnswer[i],
+                                    init_tileValue: answerPlaceholder[i],
                                     isQuestion: false,
                                     pressEffectController: toggle,
                                   ),
@@ -165,13 +208,13 @@ class _TimerMatchingState extends State<TimerMatching> {
 
 class MatchingTiles extends StatefulWidget {
   final TileState notifier;
-  final String tileValue;
+  final String init_tileValue;
   final bool isQuestion;
   final PressEffectNotifier pressEffectController;
   const MatchingTiles({
     super.key,
     required this.notifier,
-    required this.tileValue,
+    required this.init_tileValue,
     required this.isQuestion,
     required this.pressEffectController,
   });
@@ -186,19 +229,21 @@ class _MatchingTilesState extends State<MatchingTiles> {
   bool isCorrect = false;
   bool isChecked = false;
   bool isCompleted = false;
+  late String tileValue;
 
   @override
   void initState() {
     super.initState();
+    tileValue = widget.init_tileValue;
 
     widget.notifier.addListener(() {
       setState(() {
         isSelected =
-            widget.tileValue == widget.notifier.selectedQuestion ||
-            widget.tileValue == widget.notifier.selectedAnswer;
-        isCorrect = widget.notifier.correctSet.contains(widget.tileValue);
-        isChecked = widget.notifier.checkedSet.contains(widget.tileValue);
-        isCompleted = widget.notifier.completedSet.contains(widget.tileValue);
+            tileValue == widget.notifier.selectedQuestion ||
+            tileValue == widget.notifier.selectedAnswer;
+        isCorrect = widget.notifier.correctSet.contains(tileValue);
+        isChecked = widget.notifier.checkedSet.contains(tileValue);
+        isCompleted = widget.notifier.completedSet.contains(tileValue);
 
         if (isSelected) {
           widget.pressEffectController.changeShadowColor(
@@ -243,7 +288,7 @@ class _MatchingTilesState extends State<MatchingTiles> {
               : Color.fromRGBO(254, 247, 255, 1),
       selectedTileColor: Color.fromRGBO(221, 243, 254, 1),
       title: Text(
-        widget.tileValue,
+        tileValue,
         textAlign: TextAlign.center,
         style: TextStyle(
           color:
@@ -271,7 +316,7 @@ class _MatchingTilesState extends State<MatchingTiles> {
         borderRadius: BorderRadius.circular(16),
       ),
       onTap: () {
-        widget.notifier.changeSelected(widget.tileValue, widget.isQuestion);
+        widget.notifier.changeSelected(tileValue, widget.isQuestion);
         widget.pressEffectController.press();
 
         if (widget.notifier.selectedQuestion != "" &&
