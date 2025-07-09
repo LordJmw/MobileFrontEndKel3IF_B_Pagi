@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tugas2/DetailGrammar.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:animations/animations.dart';
 
 class GrammarScreen extends StatefulWidget {
   const GrammarScreen({super.key});
@@ -10,7 +14,29 @@ class GrammarScreen extends StatefulWidget {
 
 class _GrammarScreenState extends State<GrammarScreen> {
   bool bannerVisible = true;
+  bool isLoading = true;
   List<bool> completed = [false, false, false];
+
+  final List<Map<String, dynamic>> grammarList = [
+    {
+      'title': 'Parts of Speech',
+      'description':
+          'Kita akan berkenalan dengan jenis-jenis kata seperti noun...',
+      'content': PartsOfSpeechContent(),
+    },
+    {
+      'title': 'Articles',
+      'description':
+          'Articles adalah kata-kata kecil yang digunakan sebelum noun...',
+      'content': ArticlesContent(),
+    },
+    {
+      'title': 'To Be',
+      'description':
+          '"To be" adalah kata kerja penting dalam bahasa Inggris...',
+      'content': ToBeContent(),
+    },
+  ];
 
   MarkAsDone(int index) {
     setState(() {
@@ -19,6 +45,15 @@ class _GrammarScreenState extends State<GrammarScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -26,11 +61,29 @@ class _GrammarScreenState extends State<GrammarScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            bannerVisible
+            isLoading
+                ? Container()
+                : bannerVisible
                 ? MaterialBanner(
-                  content: const Text(
-                    'Semangat belajar hari ini! Setiap kata yang kamu pelajari adalah langkah menuju kefasihan. 💪',
-                    style: TextStyle(fontSize: 16),
+                  content: AnimatedTextKit(
+                    animatedTexts: [
+                      TypewriterAnimatedText(
+                        'Setiap halaman yang kamu baca adalah investasi untuk masa depanmu. 📚✨',
+                      ),
+                      TypewriterAnimatedText(
+                        'Semangat belajar hari ini! Setiap kata yang kamu pelajari adalah langkah menuju kefasihan. 💪',
+                      ),
+                      TypewriterAnimatedText(
+                        'Ketika kamu lelah, ingat alasan kamu mulai belajar.',
+                      ),
+                      TypewriterAnimatedText(
+                        'Langkah kecil hari ini akan jadi lompatan besar suatu hari nanti.',
+                      ),
+                    ],
+                    pause: Duration(seconds: 5),
+                    onTap: () {
+                      print("Tap Event");
+                    },
                   ),
                   leading: const Icon(Icons.mood, color: Colors.blue),
                   actions: [
@@ -45,49 +98,71 @@ class _GrammarScreenState extends State<GrammarScreen> {
                   ],
                 )
                 : Container(),
-            const Text(
-              'Engliboo',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-              ),
-            ),
+            isLoading
+                ? Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: const Text(
+                    'Engliboo',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                  ),
+                )
+                : const Text(
+                  'Engliboo',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
             const SizedBox(height: 8),
-            const Text(
-              'Pelajari semua tentang grammar bahasa Inggris.',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+            isLoading
+                ? Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: const Text(
+                    'Pelajari semua tentang grammar bahasa Inggris.',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                )
+                : const Text(
+                  'Pelajari semua tentang grammar bahasa Inggris.',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
             const SizedBox(height: 24),
-            GrammarCard(
-              title: 'Parts of Speech',
-              description:
-                  'Kita akan berkenalan dengan jenis-jenis kata seperti noun, adjective dan lainnya. Hal ini sangat penting agar kita dapat membentuk kalimat saat berkomunikasi.',
-              detailContent: PartsOfSpeechContent(),
-              index: 0,
-              isCompleted: completed[0],
-              onMarkAsDone: () => MarkAsDone(0),
-            ),
-            const SizedBox(height: 16),
-            GrammarCard(
-              title: 'Articles',
-              description:
-                  'Articles adalah kata-kata kecil yang digunakan sebelum kata benda (noun) untuk memberi tahu apakah benda itu sudah diketahui atau belum oleh pembicara.',
-              detailContent: ArticlesContent(),
-              index: 1,
-              isCompleted: completed[1],
-              onMarkAsDone: () => MarkAsDone(1),
-            ),
-            const SizedBox(height: 16),
-            GrammarCard(
-              title: 'To Be',
-              description:
-                  '"To be" adalah kata kerja penting dalam bahasa Inggris yang digunakan untuk menyatakan keadaan atau menjelaskan sesuatu. Bentuk dasar "to be" bisa berubah.',
-              detailContent: ToBeContent(),
-              index: 2,
-              isCompleted: completed[2],
-              onMarkAsDone: () => MarkAsDone(2),
-            ),
+
+            isLoading
+                ? Container()
+                : AnimationLimiter(
+                  child: Column(
+                    children: List.generate(grammarList.length, (index) {
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 500),
+                        child: SlideAnimation(
+                          verticalOffset: 50.0,
+                          child: FadeInAnimation(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                              child: GrammarCard(
+                                title: grammarList[index]['title'],
+                                description: grammarList[index]['description'],
+                                detailContent: grammarList[index]['content'],
+                                index: index,
+                                isCompleted: completed[index],
+                                onMarkAsDone: () => MarkAsDone(index),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
           ],
         ),
       ),
@@ -125,7 +200,7 @@ class GrammarCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Row(
                     children: [
                       const Icon(Icons.book, color: Colors.blue),
@@ -141,7 +216,7 @@ class GrammarCard extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -161,18 +236,6 @@ class GrammarCard extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Membuka materi "$title"...'),
-                          duration: const Duration(seconds: 2),
-                          backgroundColor: const Color.fromARGB(
-                            255,
-                            51,
-                            155,
-                            240,
-                          ),
-                        ),
-                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -184,13 +247,31 @@ class GrammarCard extends StatelessWidget {
                         ),
                       );
                     },
-                    child: const Text(
-                      'Pelajari lebih lanjut >',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
+                    child: OpenContainer(
+                      transitionType: ContainerTransitionType.fadeThrough,
+                      transitionDuration: const Duration(milliseconds: 500),
+                      closedElevation: 0,
+                      closedShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
+                      closedColor: Colors.transparent,
+                      openBuilder:
+                          (context, _) => DetailScreen(
+                            title: title,
+                            content: detailContent,
+                          ),
+                      closedBuilder:
+                          (context, openContainer) => TextButton(
+                            onPressed: openContainer,
+                            child: const Text(
+                              'Pelajari lebih lanjut >',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                     ),
                   ),
                   IconButton(
