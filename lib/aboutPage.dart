@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
@@ -35,9 +38,19 @@ class _AboutPageState extends State<AboutPage> {
     },
   ];
 
+  bool isLoading = true;
   final List<bool> isClickedList = [false, false, false, false];
 
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
@@ -106,6 +119,46 @@ class _AboutPageState extends State<AboutPage> {
             ),
             const SizedBox(height: 40),
 
+            Row(
+              children: [
+                SizedBox(width: 20),
+                Expanded(
+                  child: Container(
+                    height: 2,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF4A90E2), Color(0xFF7B68EE)],
+                      ),
+                      borderRadius: BorderRadius.circular(1),
+                    ),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'Developers',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF2C3E50),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    height: 2,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF7B68EE), Color(0xFF4A90E2)],
+                      ),
+                      borderRadius: BorderRadius.circular(1),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20),
+              ],
+            ),
+            const SizedBox(height: 32),
             Row(
               children: [
                 SizedBox(width: 20),
