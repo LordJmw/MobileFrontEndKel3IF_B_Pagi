@@ -1,21 +1,42 @@
+
 import 'package:flutter/material.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final String title;
   final Widget content;
 
   const DetailScreen({super.key, required this.title, required this.content});
 
   @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  bool hasShownSnackbar = false;
+
+  @override
   Widget build(BuildContext context) {
+    if (!hasShownSnackbar) {
+      hasShownSnackbar = true;
+      Future.delayed(Duration.zero, () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Membuka materi "${widget.title}"...'),
+            duration: const Duration(seconds: 2),
+            backgroundColor: const Color.fromARGB(255, 51, 155, 240),
+          ),
+        );
+      });
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.blue,
         title: Text(
-          title,
-          style: TextStyle(
+          widget.title,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -39,7 +60,7 @@ class DetailScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        title,
+                        widget.title,
                         textAlign: TextAlign.left,
                         style: const TextStyle(
                           fontSize: 28,
@@ -50,7 +71,7 @@ class DetailScreen extends StatelessWidget {
                       const SizedBox(height: 12),
                       const Divider(color: Colors.grey),
                       const SizedBox(height: 12),
-                      content,
+                      widget.content,
                     ],
                   ),
                 ),
@@ -62,6 +83,7 @@ class DetailScreen extends StatelessWidget {
     );
   }
 }
+
 
 Widget PartsOfSpeechContent() {
   return Column(
