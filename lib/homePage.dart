@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tugas2/Grammar.dart';
 import 'package:tugas2/Profile.dart';
+import 'package:tugas2/aboutPage.dart';
 import 'package:tugas2/homeContent.dart';
 import 'package:tugas2/models/quizQuestion.dart';
 import 'package:tugas2/quizPage.dart';
@@ -43,6 +44,7 @@ class _HomePageState extends State<HomePage> {
     "grammar": GrammarScreen(),
     "profile": Profile_Page(),
     "Jadwal Belajar Saya": ScheduleTab(),
+    "About Us": AboutPage(),
   };
   ValueNotifier<String> selectedPage = ValueNotifier("home");
 
@@ -173,6 +175,11 @@ class _HomePageState extends State<HomePage> {
               selectedPage: selectedPage,
               label: "profile",
               icon: Icons.person,
+            ),
+            ListTileDrawer(
+              selectedPage: selectedPage,
+              label: "About Us",
+              icon: Icons.info,
             ),
           ],
         ),

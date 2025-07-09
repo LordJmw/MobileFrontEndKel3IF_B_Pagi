@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'package:tugas2/models/quizQuestion.dart';
 import 'package:tugas2/quizPage.dart';
@@ -15,7 +16,7 @@ class Schedule extends StatefulWidget {
 class ScheduleItem {
   final String time;
   final String title;
-  final bool isEnabled;
+  bool isEnabled;
   bool isSelected;
 
   ScheduleItem({
@@ -66,6 +67,16 @@ class _ScheduleState extends State<Schedule> {
     });
   }
 
+  void markAsDone() {
+    setState(() {
+      for (int i = 0; i < scheduleItems.length; i++) {
+        if (scheduleItems[i].isSelected) {
+          scheduleItems[i].isEnabled = !scheduleItems[i].isEnabled;
+        }
+      }
+    });
+  }
+
   formatTimeToString(TimeOfDay selectedTime) {
     return "${selectedTime.hour}:${selectedTime.minute}";
   }
@@ -81,25 +92,40 @@ class _ScheduleState extends State<Schedule> {
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
+
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             selectView
                 ? Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(
-                      child: Text("Batal"),
                       onPressed: () {
-                        cancelSelection();
+                        markAsDone();
                       },
+                      child: Text(
+                        "Tandai Sebagai Selesai",
+                        textAlign: TextAlign.start,
+                      ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        selectAll();
-                      },
-                      child: Text("Pilih Semua"),
+
+                    Row(
+                      children: [
+                        TextButton(
+                          child: Text("Batal"),
+                          onPressed: () {
+                            cancelSelection();
+                          },
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            selectAll();
+                          },
+                          child: Text("Pilih Semua"),
+                        ),
+                      ],
                     ),
                   ],
                 )
@@ -311,7 +337,7 @@ class _ScheduleState extends State<Schedule> {
                                                           child: Text("Edit"),
                                                         ),
                                                       ],
-                                                    );
+                                                    ).animate().fadeIn(duration: 300.ms).scaleXY(begin: 0.8, end: 1.0);
                                                   },
                                                 );
                                               },
@@ -323,7 +349,7 @@ class _ScheduleState extends State<Schedule> {
                                     ],
                                   ),
                                 )
-                                : null),
+                                : Icon(Icons.done, color: Colors.grey[400])),
                     onLongPress: () {
                       setState(() {
                         selectView = true;
@@ -383,78 +409,82 @@ class _ScheduleState extends State<Schedule> {
                       return StatefulBuilder(
                         builder: (context, setState) {
                           return AlertDialog(
-                            title: Text("Tambah Jadwal Belajar"),
-                            content: SizedBox(
-                              height: 100,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextField(
-                                    decoration: InputDecoration(
-                                      label: Text("Input Jadwal"),
-                                    ),
-                                    controller: newSchedule,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                title: Text("Tambah Jadwal Belajar"),
+                                content: SizedBox(
+                                  height: 100,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Transform.translate(
-                                        offset: Offset(-17, 0),
-                                        child: TextButton.icon(
-                                          onPressed: () async {
-                                            var time = await showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay.now(),
-                                            );
-                                            if (time != null) {
-                                              setState(() {
-                                                timeIspicked = true;
-                                                selectedTime =
-                                                    "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
-                                              });
-                                            }
-                                          },
-                                          label: Text("Pilih Waktu"),
-                                          icon: Icon(Icons.timer),
+                                      TextField(
+                                        decoration: InputDecoration(
+                                          label: Text("Input Jadwal"),
                                         ),
+                                        controller: newSchedule,
                                       ),
-                                      timeIspicked
-                                          ? Text(selectedTime)
-                                          : Text(""),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Transform.translate(
+                                            offset: Offset(-17, 0),
+                                            child: TextButton.icon(
+                                              onPressed: () async {
+                                                var time = await showTimePicker(
+                                                  context: context,
+                                                  initialTime: TimeOfDay.now(),
+                                                );
+                                                if (time != null) {
+                                                  setState(() {
+                                                    timeIspicked = true;
+                                                    selectedTime =
+                                                        "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
+                                                  });
+                                                }
+                                              },
+                                              label: Text("Pilih Waktu"),
+                                              icon: Icon(Icons.timer),
+                                            ),
+                                          ),
+                                          timeIspicked
+                                              ? Text(selectedTime)
+                                              : Text(""),
+                                        ],
+                                      ),
                                     ],
                                   ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Batal"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      if (newSchedule.text.isNotEmpty &&
+                                          timeIspicked) {
+                                        scheduleProvider.addSchedule(
+                                          widget.day,
+                                          ScheduleItem(
+                                            time: selectedTime,
+                                            title: newSchedule.text,
+                                            isEnabled: true,
+                                          ),
+                                        );
+                                        newSchedule.clear();
+                                        Navigator.pop(context);
+                                      }
+                                    },
+                                    child: Text("Tambah"),
+                                  ),
                                 ],
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text("Batal"),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  if (newSchedule.text.isNotEmpty &&
-                                      timeIspicked) {
-                                    scheduleProvider.addSchedule(
-                                      widget.day,
-                                      ScheduleItem(
-                                        time: selectedTime,
-                                        title: newSchedule.text,
-                                        isEnabled: true,
-                                      ),
-                                    );
-                                    newSchedule.clear();
-                                    Navigator.pop(context);
-                                  }
-                                },
-                                child: Text("Tambah"),
-                              ),
-                            ],
-                          );
+                              )
+                              .animate()
+                              .fadeIn(duration: 300.ms)
+                              .scaleXY(begin: 0.8, end: 1.0);
                         },
                       );
                     },

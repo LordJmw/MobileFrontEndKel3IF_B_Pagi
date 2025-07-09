@@ -38,19 +38,19 @@ class ScheduleProvider with ChangeNotifier {
         title: 'Belajar Grammar Part 1.3',
         isEnabled: true,
       ),
-      ScheduleItem(time: '10.00', title: ' Reading Text 2', isEnabled: true),
+      ScheduleItem(time: '10.00', title: 'Reading Text 2', isEnabled: true),
     ],
     "Sabtu": [
       ScheduleItem(time: '08.00', title: 'Review Vocabulary', isEnabled: true),
-      ScheduleItem(time: '10.00', title: ' Review Chapter 1', isEnabled: true),
+      ScheduleItem(time: '10.00', title: 'Review Chapter 1', isEnabled: true),
     ],
     "Minggu": [
       ScheduleItem(
         time: '08.00',
-        title: 'Thanks for you hard work! Istirahatlah 1 hari',
+        title: 'Reading Introduction to Chapter 2',
         isEnabled: true,
       ),
-      ScheduleItem(time: '10.00', title: ' Review Chapter 1', isEnabled: true),
+      ScheduleItem(time: '10.00', title: 'Listening Part A', isEnabled: true),
     ],
   };
 

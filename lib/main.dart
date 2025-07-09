@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tugas2/feat/register.dart';
+import 'package:tugas2/homePage.dart';
 import 'package:tugas2/schedule.dart';
 import 'package:tugas2/scheduleProvider.dart';
 import 'package:tugas2/scheduleTab.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: ScheduleTab(),
+      home: HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
