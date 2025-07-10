@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tugas2/feat/login.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -176,7 +177,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: 50,
                   width: 290,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       setState(() {
                         _chekboxUnchecked =
                             _isChecked
@@ -184,6 +185,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                 : "Cek Jika Sudah Membaca Ketentuan dan Kebijakan Privasi";
                       });
                       if (_formKey.currentState!.validate()) {
+                        EasyLoading.show(status: 'Loading...');
+                        await Future.delayed(Duration(seconds: 2));
+                        EasyLoading.dismiss();
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => LoginPage()),

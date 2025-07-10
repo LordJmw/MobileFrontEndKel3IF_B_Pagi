@@ -1,5 +1,6 @@
 // import 'package:auth/register.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 // import 'package:auth/main.dart';
 import 'package:tugas2/feat/register.dart';
 import 'package:tugas2/homePage.dart';
@@ -108,7 +109,15 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   child: TextButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      EasyLoading.show(status: 'Loading...');
+                      await Future.delayed(Duration(seconds: 2));
+                      EasyLoading.showSuccess(
+                        'Verified!',
+                        duration: Duration(seconds: 1),
+                      );
+                      await Future.delayed(Duration(seconds: 1));
+                      EasyLoading.dismiss();
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
