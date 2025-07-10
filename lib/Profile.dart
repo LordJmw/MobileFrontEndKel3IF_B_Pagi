@@ -158,279 +158,271 @@ class _Profile_PageState extends State<Profile_Page> {
                     ],
                   ),
                   SizedBox(height: 5),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: Column(
-                      children: [
-                        //baris 1
-                        Row(
-                          children: [
-                            Container(
-                              width:
-                                  isLargeScreen
-                                      ? MediaQuery.of(context).size.width *
-                                          0.145
-                                      : MediaQuery.of(context).size.width *
-                                          0.38,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    174,
-                                    173,
-                                    173,
+                  Center(
+                    child: Container(
+                      constraints: BoxConstraints(maxWidth: 400),
+                      child: Column(
+                        children: [
+                          //baris 1
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 4),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: const Color.fromARGB(
+                                        255,
+                                        174,
+                                        173,
+                                        173,
+                                      ),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5),
+                                    ),
                                   ),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
-                                ),
-                              ),
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                  child: Center(
+                                    child: Column(
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.all(5),
-                                          child: TextButton.icon(
-                                            onPressed: null,
-                                            label: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Begginer",
-                                                  style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Colors.black,
-                                                  ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.all(5),
+                                              child: TextButton.icon(
+                                                onPressed: null,
+                                                label: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Beginner",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    Text("Tingkat Bahasa"),
+                                                  ],
                                                 ),
-                                                Text("Tingkat Bahasa"),
-                                              ],
-                                            ),
-                                            icon: Icon(
-                                              Icons.signal_cellular_alt,
-                                              color: Color.fromARGB(
-                                                255,
-                                                51,
-                                                155,
-                                                240,
+                                                icon: Icon(
+                                                  Icons.signal_cellular_alt,
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    51,
+                                                    155,
+                                                    240,
+                                                  ),
+                                                  size: 30,
+                                                ),
                                               ),
-                                              size: 30,
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                            Container(
-                              width:
-                                  isLargeScreen
-                                      ? MediaQuery.of(context).size.width *
-                                          0.145
-                                      : MediaQuery.of(context).size.width *
-                                          0.38,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    174,
-                                    173,
-                                    173,
                                   ),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
                                 ),
                               ),
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.only(left: 4),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: const Color.fromARGB(
+                                        255,
+                                        174,
+                                        173,
+                                        173,
+                                      ),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Column(
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.all(5),
-                                          child: TextButton.icon(
-                                            onPressed: null,
-                                            label: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Mati",
-                                                  style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Colors.black,
-                                                  ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.all(5),
+                                              child: TextButton.icon(
+                                                onPressed: null,
+                                                label: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Mati",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    Text("Alarm Pengingat"),
+                                                  ],
                                                 ),
-                                                Text("Alarm Pengingat"),
-                                              ],
-                                            ),
-                                            icon: Icon(
-                                              Icons.notifications,
-                                              color: const Color.fromARGB(
-                                                255,
-                                                227,
-                                                204,
-                                                4,
+                                                icon: Icon(
+                                                  Icons.notifications,
+                                                  color: const Color.fromARGB(
+                                                    255,
+                                                    227,
+                                                    204,
+                                                    4,
+                                                  ),
+                                                  size: 30,
+                                                ),
                                               ),
-                                              size: 30,
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        //baris 2
-                        Row(
-                          children: [
-                            Container(
-                              width:
-                                  isLargeScreen
-                                      ? MediaQuery.of(context).size.width *
-                                          0.145
-                                      : MediaQuery.of(context).size.width *
-                                          0.38,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    174,
-                                    173,
-                                    173,
                                   ),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
                                 ),
                               ),
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                            ],
+                          ),
+                          SizedBox(height: 8),
+                          //baris 2
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 4),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: const Color.fromARGB(
+                                        255,
+                                        174,
+                                        173,
+                                        173,
+                                      ),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Column(
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.all(5),
-                                          child: TextButton.icon(
-                                            onPressed: null,
-                                            label: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "1220",
-                                                  style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Colors.black,
-                                                  ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.all(5),
+                                              child: TextButton.icon(
+                                                onPressed: null,
+                                                label: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "1220",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    Text("Total XP"),
+                                                  ],
                                                 ),
-                                                Text("Total XP"),
-                                              ],
-                                            ),
-                                            icon: Icon(
-                                              Icons.flash_on,
-                                              color: const Color.fromARGB(
-                                                255,
-                                                227,
-                                                204,
-                                                4,
+                                                icon: Icon(
+                                                  Icons.flash_on,
+                                                  color: const Color.fromARGB(
+                                                    255,
+                                                    227,
+                                                    204,
+                                                    4,
+                                                  ),
+                                                  size: 30,
+                                                ),
                                               ),
-                                              size: 30,
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                            Container(
-                              width:
-                                  isLargeScreen
-                                      ? MediaQuery.of(context).size.width *
-                                          0.145
-                                      : MediaQuery.of(context).size.width *
-                                          0.38,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    174,
-                                    173,
-                                    173,
                                   ),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
                                 ),
                               ),
-                              child: Center(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.only(left: 4),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: const Color.fromARGB(
+                                        255,
+                                        174,
+                                        173,
+                                        173,
+                                      ),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Column(
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.all(5),
-                                          child: TextButton.icon(
-                                            onPressed: null,
-                                            label: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "30",
-                                                  style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    color: Colors.black,
-                                                  ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.all(5),
+                                              child: TextButton.icon(
+                                                onPressed: null,
+                                                label: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "30",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    Text("Runtutan Hari"),
+                                                  ],
                                                 ),
-                                                Text("Runtutan Hari"),
-                                              ],
+                                                icon: Icon(
+                                                  Icons.local_fire_department,
+                                                  color: Colors.orangeAccent,
+                                                  size: 30,
+                                                ),
+                                              ),
                                             ),
-                                            icon: Icon(
-                                              Icons.local_fire_department,
-                                              color: Colors.orangeAccent,
-                                              size: 30,
-                                            ),
-                                          ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 20),
@@ -475,136 +467,166 @@ class _Profile_PageState extends State<Profile_Page> {
 
                   SizedBox(height: 15),
 
-                  Row(
-                    children: [
-                      //container 1
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 174, 173, 173),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                        ),
-                        width:
-                            isLargeScreen
-                                ? MediaQuery.of(context).size.width * 0.095
-                                : MediaQuery.of(context).size.width * 0.26,
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              FaIcon(
-                                FontAwesomeIcons.bullseye,
-                                size: 60,
-                                color: const Color.fromARGB(255, 146, 212, 70),
-                              ),
-                              SizedBox(height: 10),
-                              Text("Pelajaran"),
-                              Text("Sempurna"),
-                              Text(
-                                "17 Agu 2024",
-                                style: TextStyle(
-                                  fontSize: 12,
+                  Center(
+                    child: Container(
+                      constraints: BoxConstraints(maxWidth: 500),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 4),
+                              decoration: BoxDecoration(
+                                border: Border.all(
                                   color: const Color.fromARGB(
                                     255,
                                     174,
                                     173,
                                     173,
                                   ),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      //container 2
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 174, 173, 173),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                        ),
-                        width:
-                            isLargeScreen
-                                ? MediaQuery.of(context).size.width * 0.095
-                                : MediaQuery.of(context).size.width * 0.26,
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.flash_on,
-                                color: const Color.fromARGB(255, 227, 204, 4),
-                                size: 60,
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    FaIcon(
+                                      FontAwesomeIcons.bullseye,
+                                      size: 60,
+                                      color: const Color.fromARGB(
+                                        255,
+                                        146,
+                                        212,
+                                        70,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text("Pelajaran"),
+                                    Text("Sempurna"),
+                                    Text(
+                                      "17 Agu 2024",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: const Color.fromARGB(
+                                          255,
+                                          174,
+                                          173,
+                                          173,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              SizedBox(height: 10),
-                              Text("XP Terbanyak"),
-                              Text("Sempurna"),
-                              Text(
-                                "20 Des 2024",
-                                style: TextStyle(
-                                  fontSize: 12,
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 4),
+                              decoration: BoxDecoration(
+                                border: Border.all(
                                   color: const Color.fromARGB(
                                     255,
                                     174,
                                     173,
                                     173,
                                   ),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 174, 173, 173),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                        ),
-                        width:
-                            isLargeScreen
-                                ? MediaQuery.of(context).size.width * 0.095
-                                : MediaQuery.of(context).size.width * 0.26,
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.local_fire_department,
-                                color: Colors.orangeAccent,
-                                size: 60,
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.flash_on,
+                                      color: const Color.fromARGB(
+                                        255,
+                                        227,
+                                        204,
+                                        4,
+                                      ),
+                                      size: 60,
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text("XP Terbanyak"),
+                                    Text("Sempurna"),
+                                    Text(
+                                      "20 Des 2024",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: const Color.fromARGB(
+                                          255,
+                                          174,
+                                          173,
+                                          173,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              SizedBox(height: 10),
-                              Text("Rekor Runtunan"),
-                              Text("Sempurna"),
-                              Text(
-                                "11 Jan 2025",
-                                style: TextStyle(
-                                  fontSize: 12,
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 4),
+                              decoration: BoxDecoration(
+                                border: Border.all(
                                   color: const Color.fromARGB(
                                     255,
                                     174,
                                     173,
                                     173,
                                   ),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
                                 ),
                               ),
-                            ],
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.local_fire_department,
+                                      color: Colors.orangeAccent,
+                                      size: 60,
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text("Rekor Runtunan"),
+                                    Text("Sempurna"),
+                                    Text(
+                                      "11 Jan 2025",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: const Color.fromARGB(
+                                          255,
+                                          174,
+                                          173,
+                                          173,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
