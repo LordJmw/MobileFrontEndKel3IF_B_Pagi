@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:tugas2/components/check_button.dart';
 import 'package:tugas2/components/press_effect.dart';
+import 'package:tugas2/homePage.dart';
+import 'package:tugas2/zbhal.dart';
 
 class TileState extends ChangeNotifier {
   final Map<String, String> pairs;
@@ -9,14 +13,19 @@ class TileState extends ChangeNotifier {
   final List<String> nextAnswer;
   final StopWatchTimer longDelay = StopWatchTimer(
     mode: StopWatchMode.countDown,
-    presetMillisecond: StopWatchTimer.getMilliSecFromSecond(5),
+    presetMillisecond: StopWatchTimer.getMilliSecFromSecond(3),
   );
+  StreamSubscription<bool>? _fetchEnded;
   Set<String> completedSet = {};
   Set<String> correctSet = {};
   Set<String> checkedSet = {};
   String selectedQuestion = "";
   String selectedAnswer = "";
-  Map<String, String> newPair = {};
+  final Map<String, String> newPair = {};
+  String _tmpQuestion = "";
+  String _tmpAnswer = "";
+  bool isSwapped = false;
+  double progress = 0;
 
   void changeSelected(value, isQuestion) {
     if (isQuestion) {
@@ -33,8 +42,9 @@ class TileState extends ChangeNotifier {
       correctSet.add(selectedAnswer);
       completedSet.add(selectedAnswer);
       completedSet.add(selectedQuestion);
+      progress += (100 / pairs.length) / 100;
 
-      if (completedSet.length < pairs.length * 2) {
+      if (nextQuestion.length > 0) {
         changeQuestion(selectedQuestion, selectedAnswer);
       }
     }
@@ -53,17 +63,49 @@ class TileState extends ChangeNotifier {
   }
 
   void changeQuestion(String prevQuestion, String prevAnswer) {
-    longDelay.onStartTimer();
     String question = "";
     String answer = "";
-    
-    longDelay.fetchStopped.listen(
-      (value) {
-        question = nextQuestion[0];
+    if (longDelay.isRunning) {
+      longDelay.onResetTimer();
+      if (nextAnswer.length > 1 && !isSwapped) {
+        answer = nextAnswer[1];
+        nextAnswer.removeAt(1);
+        isSwapped = true;
+      } else {
         answer = nextAnswer[0];
-        newPair.addEntries({prevQuestion: })
-      },
-    );
+        nextAnswer.removeAt(0);
+        isSwapped = false;
+      }
+      question = nextQuestion[0];
+      nextQuestion.removeAt(0);
+      newPair[_tmpQuestion] = question;
+      newPair[_tmpAnswer] = answer;
+      notifyListeners();
+      if (nextAnswer.length == 0) {
+        return;
+      }
+    }
+    _fetchEnded?.cancel();
+    longDelay.onStartTimer();
+    newPair.clear();
+    _tmpAnswer = prevAnswer;
+    _tmpQuestion = prevQuestion;
+    _fetchEnded = longDelay.fetchEnded.listen((value) {
+      question = nextQuestion[0];
+      answer = nextAnswer[0];
+      nextQuestion.removeAt(0);
+      nextAnswer.removeAt(0);
+      newPair[prevQuestion] = question;
+      newPair[prevAnswer] = answer;
+      longDelay.onResetTimer();
+      isSwapped = false;
+      notifyListeners();
+    });
+  }
+
+  void dispose() async {
+    super.dispose();
+    await longDelay.dispose();
   }
 
   TileState({
@@ -89,13 +131,29 @@ class _TimerMatchingState extends State<TimerMatching> {
   Map<String, String> nextPairs = {};
   List<String> questionPlaceholder = [];
   List<String> answerPlaceholder = [];
-
+  final StopWatchTimer timer = StopWatchTimer(
+    mode: StopWatchMode.countDown,
+    presetMillisecond: StopWatchTimer.getMilliSecFromSecond(90),
+  );
   bool isCompleted = false;
-  String buttonText = "PERIKSA";
+  late int secondTime;
+  bool _show = false;
 
   @override
   void initState() {
     super.initState();
+    timer.onStartTimer();
+    timer.secondTime.listen((value) {
+      setState(() {
+        secondTime = value;
+      });
+    });
+    timer.fetchEnded.listen((value) {
+      setState(() {
+        timer.onStopTimer();
+        _show = true;
+      });
+    });
     initialPairs = Map.fromEntries(widget.pairs.entries.take(5));
     nextPairs = Map.fromEntries(widget.pairs.entries.skip(5));
     nextQuestion = nextPairs.keys.toList();
@@ -113,26 +171,59 @@ class _TimerMatchingState extends State<TimerMatching> {
       setState(() {
         if (notifier.completedSet.length == widget.pairs.length * 2) {
           isCompleted = true;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Jawaban Anda Benar"),
-              backgroundColor: const Color.fromARGB(255, 2, 201, 9),
-              duration: Duration(seconds: 3),
-            ),
-          );
+          timer.onStopTimer();
+          _show = true;
         }
       });
     });
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    timer.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:
+          _show
+              ? null
+              : AppBar(
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.clear, size: 42, color: Colors.grey[400]),
+                ),
+                title: LinearProgressIndicator(
+                  value: notifier.progress,
+                  minHeight: 18,
+                  borderRadius: BorderRadius.circular(100),
+                  color: Color.fromRGBO(28, 176, 246, 1),
+                  backgroundColor: Color.fromRGBO(229, 229, 229, 1),
+                ),
+                actions: [
+                  SizedBox(
+                    width: 68,
+                    child: Text(
+                      "${StopWatchTimer.getDisplayTimeMinute(StopWatchTimer.getMilliSecFromSecond(secondTime))}:${StopWatchTimer.getDisplayTimeSecond(StopWatchTimer.getMilliSecFromSecond(secondTime))}",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: "Jellee",
+                        color: Colors.purple[300],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Align(
                 alignment: Alignment.topLeft,
@@ -146,62 +237,191 @@ class _TimerMatchingState extends State<TimerMatching> {
                 ),
               ),
 
-              Column(
-                children: [
-                  for (int i = 0; i < 5; i++)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 28),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: PressEffect(
-                              offset: 4,
-                              child:
-                                  (toggle) => MatchingTiles(
-                                    notifier: notifier,
-                                    init_tileValue: questionPlaceholder[i],
-                                    isQuestion: true,
-                                    pressEffectController: toggle,
-                                  ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (int i = 0; i < 5; i++)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 28),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: PressEffect(
+                                offset: 4,
+                                child:
+                                    (toggle) => MatchingTiles(
+                                      notifier: notifier,
+                                      init_tileValue: questionPlaceholder[i],
+                                      isQuestion: true,
+                                      pressEffectController: toggle,
+                                    ),
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 80),
+                            SizedBox(width: 80),
 
-                          Expanded(
-                            child: PressEffect(
-                              offset: 4,
-                              child:
-                                  (toggle) => MatchingTiles(
-                                    notifier: notifier,
-                                    init_tileValue: answerPlaceholder[i],
-                                    isQuestion: false,
-                                    pressEffectController: toggle,
-                                  ),
+                            Expanded(
+                              child: PressEffect(
+                                offset: 4,
+                                child:
+                                    (toggle) => MatchingTiles(
+                                      notifier: notifier,
+                                      init_tileValue: answerPlaceholder[i],
+                                      isQuestion: false,
+                                      pressEffectController: toggle,
+                                    ),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                ],
-              ),
-
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 28),
-                child: PressEffect(
-                  offset: 6,
-                  child:
-                      (toggle) => CheckButton(
-                        pressEffectController: toggle,
-                        buttonState: isCompleted,
-                        label: buttonText,
-                      ),
+                  ],
                 ),
               ),
             ],
           ),
         ),
       ),
+      bottomSheet:
+          _show
+              ? Container(
+                padding: EdgeInsets.all(24),
+                color: Color.from(
+                  alpha: 1,
+                  red: 0.11,
+                  green: 0.69,
+                  blue: 0.965,
+                ),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Tantangan\nSelesai!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: "Jellee",
+                              color: Colors.white,
+                              fontSize: 42,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Total Pencocokkan",
+                                style: TextStyle(
+                                  fontFamily: "Jellee",
+                                  color: Colors.orange[100],
+                                  fontSize: 18,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "${notifier.completedSet.length / 2.round()}",
+                                    style: TextStyle(
+                                      fontFamily: "Jellee",
+                                      color: Colors.orange[100],
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(width: 6),
+                                  Icon(
+                                    Icons.check_circle,
+                                    color: Colors.orange[100],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 6),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Total Waktu",
+                                style: TextStyle(
+                                  fontFamily: "Jellee",
+                                  color: Colors.orange[100],
+                                  fontSize: 18,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "${StopWatchTimer.getDisplayTimeMinute(StopWatchTimer.getMilliSecFromSecond(secondTime))}:${StopWatchTimer.getDisplayTimeSecond(StopWatchTimer.getMilliSecFromSecond(secondTime))}",
+                                    style: TextStyle(
+                                      fontFamily: "Jellee",
+                                      color: Colors.orange[100],
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(width: 6),
+                                  Icon(
+                                    Icons.watch_later_outlined,
+                                    color: Colors.orange[100],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 28),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  Navigator.pop(context);
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(14.0),
+                                child: Text(
+                                  "KEMBALI",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontFamily: "Jellee",
+                                    letterSpacing: 2,
+                                    color: Color.from(
+                                      alpha: 1,
+                                      red: 0.11,
+                                      green: 0.69,
+                                      blue: 0.965,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              style: TextButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+              : null,
     );
   }
 }
@@ -262,6 +482,16 @@ class _MatchingTilesState extends State<MatchingTiles> {
           }
         } else if (isDisabled && isCompleted) {
           widget.pressEffectController.changePressedState(true);
+          if (widget.notifier.newPair.containsKey(tileValue)) {
+            setState(() {
+              tileValue = widget.notifier.newPair[tileValue]!;
+              isDisabled = false;
+              widget.pressEffectController.changePressedState(false);
+              widget.pressEffectController.changeShadowColor(
+                Color.fromRGBO(229, 229, 229, 1),
+              );
+            });
+          }
         } else {
           setState(() {
             widget.pressEffectController.changeShadowColor(
