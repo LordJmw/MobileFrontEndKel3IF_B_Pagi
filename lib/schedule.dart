@@ -224,7 +224,7 @@ class _ScheduleState extends State<Schedule> {
                                           ),
                                           child: TextButton(
                                             onPressed: () {
-                                              Navigator.pushReplacement(
+                                              Navigator.pushAndRemoveUntil(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder:
@@ -237,6 +237,7 @@ class _ScheduleState extends State<Schedule> {
                                                                 false,
                                                           ),
                                                 ),
+                                                (Route<dynamic> route) => false,
                                               );
                                             },
                                             child: const Text(

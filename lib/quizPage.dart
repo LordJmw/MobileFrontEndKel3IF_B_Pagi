@@ -47,10 +47,10 @@ class _QuizPageState extends State<QuizPage> {
         provider.updateProgress(widget.quizIndex);
       }
 
-      Navigator.pushAndRemoveUntil(
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
-        (route) => false,
       );
     } else {
       if (mounted)
@@ -82,12 +82,13 @@ class _QuizPageState extends State<QuizPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed:
-              () => Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-                (route) => false,
-              ),
+          onPressed: () {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
           icon: Icon(Icons.clear, size: 30, color: Colors.grey[400]),
         ),
         title: LinearProgressIndicator(

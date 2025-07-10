@@ -27,68 +27,65 @@ class _ScheduleTabState extends State<ScheduleTab> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
-        length: tabs.length,
-        child: Builder(
-          builder: (context) {
-            ScheduleProvider scheduleProvider = Provider.of<ScheduleProvider>(
-              context,
-            );
+    return DefaultTabController(
+      length: tabs.length,
+      child: Builder(
+        builder: (context) {
+          ScheduleProvider scheduleProvider = Provider.of<ScheduleProvider>(
+            context,
+          );
 
-            return Scaffold(
-              appBar: AppBar(
-                title: Text("Hari"),
-                bottom: TabBar(tabs: tabs),
-                actions: [
-                  PopupMenuButton(
-                    icon: Icon(Icons.more_vert),
-                    itemBuilder:
-                        (BuildContext context) => <PopupMenuEntry>[
-                          PopupMenuItem(
-                            child: ListTile(
-                              leading: Icon(Icons.bar_chart),
-                              title: Text("Progress Tracking"),
-                              onTap: () {},
-                            ),
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("Jadwal Saya"),
+              bottom: TabBar(tabs: tabs),
+              actions: [
+                PopupMenuButton(
+                  icon: Icon(Icons.more_vert),
+                  itemBuilder:
+                      (BuildContext context) => <PopupMenuEntry>[
+                        PopupMenuItem(
+                          child: ListTile(
+                            leading: Icon(Icons.bar_chart),
+                            title: Text("Progress Tracking"),
+                            onTap: () {},
                           ),
-                          PopupMenuItem(
-                            child: ListTile(
-                              leading: Icon(Icons.settings),
-                              title: Text("Pengaturan Notifikasi"),
-                            ),
+                        ),
+                        PopupMenuItem(
+                          child: ListTile(
+                            leading: Icon(Icons.settings),
+                            title: Text("Pengaturan Notifikasi"),
                           ),
-                          PopupMenuItem(
-                            child: ListTile(
-                              leading: Icon(Icons.share),
-                              title: Text("Share Jadwal"),
-                            ),
+                        ),
+                        PopupMenuItem(
+                          child: ListTile(
+                            leading: Icon(Icons.share),
+                            title: Text("Share Jadwal"),
                           ),
-                          PopupMenuItem(
-                            child: ListTile(
-                              leading: Icon(Icons.calendar_month),
-                              title: Text("Ekspor ke Kalender Lokal"),
-                            ),
+                        ),
+                        PopupMenuItem(
+                          child: ListTile(
+                            leading: Icon(Icons.calendar_month),
+                            title: Text("Ekspor ke Kalender Lokal"),
                           ),
-                        ],
-                  ),
-                ],
-              ),
-              body: TabBarView(
-                children: [
-                  Schedule(day: "Senin"),
-                  Schedule(day: "Selasa"),
-                  Schedule(day: "Rabu"),
-                  Schedule(day: "Kamis"),
-                  Schedule(day: "Jumat"),
-                  Schedule(day: "Sabtu"),
-                  Schedule(day: "Minggu"),
-                ],
-              ),
-            );
-          },
-        ),
+                        ),
+                      ],
+                ),
+              ],
+            ),
+            body: TabBarView(
+              children: [
+                Schedule(day: "Senin"),
+                Schedule(day: "Selasa"),
+                Schedule(day: "Rabu"),
+                Schedule(day: "Kamis"),
+                Schedule(day: "Jumat"),
+                Schedule(day: "Sabtu"),
+                Schedule(day: "Minggu"),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
