@@ -9,6 +9,7 @@ import 'package:tugas2/scheduleProvider.dart';
 import 'package:tugas2/scheduleTab.dart';
 
 void main() {
+  configLoading();
   runApp(
     MultiProvider(
       providers: [
@@ -18,7 +19,6 @@ void main() {
       child: const MyApp(),
     ),
   );
-  configLoading();
 }
 
 void configLoading() {
