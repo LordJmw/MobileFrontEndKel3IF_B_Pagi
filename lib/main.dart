@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tugas2/HomeProgressProvider.dart';
 import 'package:tugas2/feat/register.dart';
 import 'package:tugas2/homePage.dart';
@@ -17,6 +18,13 @@ void main() {
       child: const MyApp(),
     ),
   );
+  configLoading();
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.light;
 }
 
 class MyApp extends StatelessWidget {
@@ -28,6 +36,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       home: RegisterPage(),
       debugShowCheckedModeBanner: false,
+      builder: EasyLoading.init(),
     );
   }
 }

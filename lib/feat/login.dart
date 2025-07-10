@@ -1,6 +1,5 @@
-// import 'package:auth/register.dart';
 import 'package:flutter/material.dart';
-// import 'package:auth/main.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:tugas2/feat/register.dart';
 import 'package:tugas2/homePage.dart';
 import 'package:tugas2/main.dart';
@@ -107,17 +106,34 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  child: Text(
-                    'MASUK',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                  child: TextButton(
+                    onPressed: () async {
+                      EasyLoading.show(status: 'Loading...');
+                      await Future.delayed(Duration(seconds: 2));
+                      EasyLoading.showSuccess(
+                        'Verified!',
+                        duration: Duration(seconds: 1),
+                      );
+                      await Future.delayed(Duration(seconds: 1));
+                      EasyLoading.dismiss();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomePage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'MASUK',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
               ),
-
               SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
