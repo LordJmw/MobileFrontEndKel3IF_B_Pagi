@@ -232,6 +232,9 @@ class _ScheduleState extends State<Schedule> {
                                                           QuizPage(
                                                             quizStage:
                                                                 quiz.stages[0],
+                                                            quizIndex: index,
+                                                            shouldMarkCompleted:
+                                                                false,
                                                           ),
                                                 ),
                                               );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tugas2/HomeProgressProvider.dart';
 import 'package:tugas2/feat/register.dart';
 import 'package:tugas2/homePage.dart';
 import 'package:tugas2/schedule.dart';
@@ -10,9 +11,8 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => ScheduleProvider(),
-        ), // ✅ Register your provider
+        ChangeNotifierProvider(create: (_) => ScheduleProvider()),
+        ChangeNotifierProvider(create: (_) => ProgressProvider()),
       ],
       child: const MyApp(),
     ),

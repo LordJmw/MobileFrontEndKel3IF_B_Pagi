@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tugas2/HomeProgressProvider.dart';
 import 'package:tugas2/models/quizQuestion.dart';
 import 'package:tugas2/quizPage.dart';
 
@@ -215,53 +217,25 @@ class _HomeContentState extends State<HomeContent> {
     ),
   ];
 
-  final quiz = QuizUnit(
-    title: "Bahasa Inggris Dasar",
-    category: ["Vocabulary", "Grammar"],
-    questions: [
-      QuestionData(
-        type: QuestionType.textfield,
-        data: {
-          'image':
-              'https://png.pngtree.com/png-clipart/20190925/original/pngtree-rabbit_cartoon-png-image_4992696.jpg',
-          'label': 'Kelinci',
-          'correctAnswer': 'rabbit',
-        },
-      ),
-      QuestionData(
-        type: QuestionType.arrangingWords,
-        data: {
-          'question': 'saya suka burger',
-          'words': ['I', 'You', 'like', 'soda', 'burger', 'always'],
-          'answers': 'i like burger',
-        },
-      ),
-      QuestionData(
-        type: QuestionType.matching,
-        data: {
-          'pairs': {
-            'i': 'saya',
-            'you': 'kamu',
-            'like': 'suka',
-            'play': 'bermain',
-            'sunday': 'minggu',
-          },
-        },
-      ),
-    ],
-  );
-
   @override
+  //supaya muncul setelah render
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    //run ketika pertama kali di load pakai widgetsBinding.instance.addPostFrameCallBack
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
+    //microtask untuk pastikan bahwa ini setelah build
+    Future.microtask(() {
+      if (!mounted) return;
+
+      final scaffold = ScaffoldMessenger.of(context);
+      final progressProvider = Provider.of<ProgressProvider>(
+        context,
+        listen: false,
+      );
+
+      scaffold.showSnackBar(
         SnackBar(
           content: Text(
-            "Hi! Progress mu sudah 17%, pertahankan kerja bagusmu!",
+            "Hi! Progress mu sudah ${progressProvider.progress.round()}%, pertahankan kerja bagusmu!",
           ),
           backgroundColor: const Color.fromARGB(255, 51, 155, 240),
           duration: Duration(seconds: 3),
@@ -272,6 +246,7 @@ class _HomeContentState extends State<HomeContent> {
 
   @override
   Widget build(BuildContext context) {
+    final progressProvider = Provider.of<ProgressProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -383,6 +358,8 @@ class _HomeContentState extends State<HomeContent> {
                         children:
                         //pakai list.generate daripada map karena map gabisa pake index
                         List.generate(materials.length, (index) {
+                          final isCompleted =
+                              progressProvider.completedUnits[index];
                           int unitNumber = index + 1;
                           String unit = "Unit $unitNumber";
                           String unitTitle = materials[index]["title"];
@@ -432,7 +409,7 @@ class _HomeContentState extends State<HomeContent> {
                                           ),
                                         ),
                                         child:
-                                            index + 1 == 1
+                                            isCompleted
                                                 ? Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius:
@@ -543,7 +520,7 @@ class _HomeContentState extends State<HomeContent> {
                                               .toList(),
                                     ),
                                   ),
-                                  index + 1 == 1
+                                  isCompleted
                                       ? Container()
                                       : Row(
                                         spacing: 5,
@@ -611,6 +588,9 @@ class _HomeContentState extends State<HomeContent> {
                                                           quizStage:
                                                               quizzes[index - 1]
                                                                   .stages[0],
+                                                          quizIndex: index - 1,
+                                                          shouldMarkCompleted:
+                                                              true,
                                                         ),
                                                   ),
                                                 );

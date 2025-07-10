@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tugas2/Grammar.dart';
+import 'package:tugas2/HomeProgressProvider.dart';
 import 'package:tugas2/Profile.dart';
 import 'package:tugas2/aboutPage.dart';
 import 'package:tugas2/homeContent.dart';
@@ -17,22 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // late List<Widget> views;
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-
-  //   views = [
-  //     HomeContent(),
-  //     Golda(),
-  //     QuizPage(quizStage: quizUnit.stages[0]),
-  //     GrammarScreen(),
-  //     Profile_Page(),
-  //   ];
-  // }
-
   QuizUnit quizUnit = QuizUnit(
     title: "Bahasa Inggris Dasar",
     category: ["Vocabulary", "Grammar"],
@@ -81,6 +67,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    ProgressProvider progressProvider = Provider.of<ProgressProvider>(context);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 236, 235, 235),
       appBar: AppBar(
@@ -126,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                                 Radius.circular(40),
                               ),
                               backgroundColor: Colors.white,
-                              value: 0.2,
+                              value: progressProvider.progress / 100,
                               valueColor: AlwaysStoppedAnimation(
                                 const Color.fromARGB(255, 29, 228, 29),
                               ),

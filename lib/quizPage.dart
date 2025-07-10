@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tugas2/HomeProgressProvider.dart';
 import 'package:tugas2/homeContent.dart';
 import 'package:tugas2/homePage.dart';
 import 'package:tugas2/models/quizQuestion.dart';
 
 class QuizPage extends StatefulWidget {
   final QuizStage quizStage;
-  const QuizPage({super.key, required this.quizStage});
+  final int quizIndex;
+  final bool shouldMarkCompleted;
+  const QuizPage({
+    super.key,
+    required this.quizStage,
+    required this.quizIndex,
+    this.shouldMarkCompleted = true,
+  });
 
   @override
   State<QuizPage> createState() => _QuizPageState();
@@ -15,34 +24,57 @@ class _QuizPageState extends State<QuizPage> {
   late List<Widget> listQuiz;
   late int page;
   double progress = 0;
+  bool _isDisposed =
+      false; //dipakai supaya setState ga ke trigger di widget lama yang ga kepakai
+  //kalau ga dispose nanti bisa error,"Tried to listen to a value exposed with provider, from outside of the widget tree.
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     listQuiz = widget.quizStage.widgets;
     page = widget.quizStage.pageCounter.page.value;
 
-    widget.quizStage.pageCounter.page.addListener(() {
-      setState(() {
-        if (page == listQuiz.length - 1) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
-          );
-        } else {
-          page = widget.quizStage.pageCounter.page.value;
-        }
-      });
-    });
+    widget.quizStage.pageCounter.page.addListener(_handlePageChange);
+    widget.quizStage.pageCounter.isCompleted.addListener(_handleCompletion);
+  }
 
-    widget.quizStage.pageCounter.isCompleted.addListener(() {
-      setState(() {
-        if (widget.quizStage.pageCounter.isCompleted.value) {
-          progress += .333;
-        }
-      });
+  void _handlePageChange() {
+    if (_isDisposed) return;
+
+    if (page == listQuiz.length - 1) {
+      if (widget.shouldMarkCompleted && widget.quizIndex != null) {
+        final provider = Provider.of<ProgressProvider>(context, listen: false);
+        provider.updateProgress(widget.quizIndex);
+      }
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+        (route) => false,
+      );
+    } else {
+      if (mounted)
+        setState(() {
+          page = widget.quizStage.pageCounter.page.value;
+        });
+    }
+  }
+
+  void _handleCompletion() {
+    if (_isDisposed || !mounted) return;
+
+    setState(() {
+      progress =
+          (widget.quizStage.pageCounter.page.value + 1) / listQuiz.length;
     });
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    widget.quizStage.pageCounter.page.removeListener(_handlePageChange);
+    widget.quizStage.pageCounter.isCompleted.removeListener(_handleCompletion);
+    super.dispose();
   }
 
   @override
@@ -50,15 +82,13 @@ class _QuizPageState extends State<QuizPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-              (route) => false, //supaya semua rute sebelum dihapus
-            );
-          },
-          icon: Icon(Icons.clear, size: 50, color: Colors.grey[400]),
-          padding: EdgeInsets.zero,
+          onPressed:
+              () => Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+                (route) => false,
+              ),
+          icon: Icon(Icons.clear, size: 30, color: Colors.grey[400]),
         ),
         title: LinearProgressIndicator(
           value: progress,
