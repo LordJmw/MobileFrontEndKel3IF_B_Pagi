@@ -31,9 +31,40 @@ class _ScheduleState extends State<Schedule> {
   bool selectView = false;
   TextEditingController newSchedule = TextEditingController(text: "");
 
-  final QuizUnit quizUnit = QuizUnit(
-    title: "Halo Nama Saya...",
-    category: ["Simple Present", "Simple Past", "Self-Introduced"],
+  final quiz = QuizUnit(
+    title: "Bahasa Inggris Dasar",
+    category: ["Vocabulary", "Grammar"],
+    questions: [
+      QuestionData(
+        type: QuestionType.textfield,
+        data: {
+          'image':
+              'https://images.vexels.com/media/users/3/151669/isolated/preview/cffc3cd93f88d0f459a0f069810dd2b5-deer-animal-cartoon.png',
+          'label': 'Rusa',
+          'correctAnswer': 'deer',
+        },
+      ),
+      QuestionData(
+        type: QuestionType.arrangingWords,
+        data: {
+          'question': 'saya akan minum',
+          'words': ['I', 'am', 'will', 'drink', 'was', 'drank'],
+          'answers': 'i will drink',
+        },
+      ),
+      QuestionData(
+        type: QuestionType.matching,
+        data: {
+          'pairs': {
+            'fishing': 'memancing',
+            'swimming': 'berenang',
+            'sand castle': 'istana pasir',
+            'picnic': 'piknik',
+            'fly a kite': 'menerbangkan layang layang',
+          },
+        },
+      ),
+    ],
   );
 
   List<ScheduleItem> scheduleItems = [];
@@ -104,6 +135,7 @@ class _ScheduleState extends State<Schedule> {
                     TextButton(
                       onPressed: () {
                         markAsDone();
+                        selectView = false;
                       },
                       child: Text(
                         "Tandai Sebagai Selesai",
@@ -135,234 +167,246 @@ class _ScheduleState extends State<Schedule> {
                 itemCount: scheduleItems.length,
                 itemBuilder: (context, index) {
                   final item = scheduleItems[index];
-                  return ListTile(
-                    contentPadding: const EdgeInsets.only(bottom: 16),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.time,
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w300,
-                            color:
-                                item.isEnabled
-                                    ? Colors.black87
-                                    : Colors.grey[400],
+                  return Card(
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.only(bottom: 16),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.time,
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w300,
+                              color:
+                                  item.isEnabled
+                                      ? Colors.black87
+                                      : Colors.grey[400],
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          item.title,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color:
-                                item.isEnabled
-                                    ? Colors.grey[600]
-                                    : Colors.grey[400],
+                          const SizedBox(height: 4),
+                          Text(
+                            item.title,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color:
+                                  item.isEnabled
+                                      ? Colors.grey[600]
+                                      : Colors.grey[400],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    trailing:
-                        selectView
-                            ? Checkbox(
-                              value: item.isSelected,
-                              activeColor: const Color.fromRGBO(
-                                28,
-                                176,
-                                246,
-                                1,
-                              ),
-                              onChanged: (val) {
-                                setState(() {
-                                  item.isSelected = val!;
-                                });
-                              },
-                            )
-                            : (item.isEnabled
-                                ? SizedBox(
-                                  height: 80,
-                                  child: Column(
-                                    children: [
-                                      ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          maxHeight: 20,
-                                        ),
-                                        child: TextButton(
-                                          onPressed: () {
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (_) => QuizPage(
-                                                      quizStage:
-                                                          quizUnit.stages[0],
-                                                    ),
-                                              ),
-                                            );
-                                          },
-                                          child: const Text(
-                                            "Mulai",
-                                            style: TextStyle(fontSize: 13),
+                        ],
+                      ),
+                      trailing:
+                          selectView
+                              ? Checkbox(
+                                value: item.isSelected,
+                                activeColor: const Color.fromRGBO(
+                                  28,
+                                  176,
+                                  246,
+                                  1,
+                                ),
+                                onChanged: (val) {
+                                  setState(() {
+                                    item.isSelected = val!;
+                                  });
+                                },
+                              )
+                              : (item.isEnabled
+                                  ? SizedBox(
+                                    height: 80,
+                                    child: Column(
+                                      children: [
+                                        ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                            maxHeight: 20,
+                                          ),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          QuizPage(
+                                                            quizStage:
+                                                                quiz.stages[0],
+                                                          ),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text(
+                                              "Mulai",
+                                              style: TextStyle(fontSize: 13),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(height: 5),
-                                      ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          maxHeight: 20,
-                                        ),
-                                        child: TextButton.icon(
-                                          label: Text(
-                                            "Edit Jadwal",
-                                            style: TextStyle(fontSize: 12),
+                                        SizedBox(height: 5),
+                                        ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                            maxHeight: 20,
                                           ),
-                                          onPressed: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                //kalau ga pakai,setState tidak ada efek, pakai stateful builder supaya state lokal dalam dialog bisa ubah
-                                                //setState tidak akan rebuild dialog, karena dialog hanya di build satu kali dengan buildcontext context
-                                                //stateful builder juga berguna krn dibuat state lokal dan hanya lokal(dialog) yang di rebuild
-                                                return StatefulBuilder(
-                                                  builder: (context, setState) {
-                                                    return AlertDialog(
-                                                      title: Text(
-                                                        "Edit Jadwal Belajar",
-                                                      ),
-                                                      content: SizedBox(
-                                                        height: 100,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            TextField(
-                                                              decoration:
-                                                                  InputDecoration(
-                                                                    label: Text(
-                                                                      "Input Jadwal",
-                                                                    ),
-                                                                  ),
-                                                              controller:
-                                                                  newSchedule,
-                                                            ),
-                                                            SizedBox(
-                                                              height: 10,
-                                                            ),
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Transform.translate(
-                                                                  offset:
-                                                                      Offset(
-                                                                        -17,
-                                                                        0,
+                                          child: TextButton.icon(
+                                            label: Text(
+                                              "Edit Jadwal",
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (
+                                                  BuildContext context,
+                                                ) {
+                                                  //kalau ga pakai,setState tidak ada efek, pakai stateful builder supaya state lokal dalam dialog bisa ubah
+                                                  //setState tidak akan rebuild dialog, karena dialog hanya di build satu kali dengan buildcontext context
+                                                  //stateful builder juga berguna krn dibuat state lokal dan hanya lokal(dialog) yang di rebuild
+                                                  return StatefulBuilder(
+                                                    builder: (
+                                                      context,
+                                                      setState,
+                                                    ) {
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                          "Edit Jadwal Belajar",
+                                                        ),
+                                                        content: SizedBox(
+                                                          height: 100,
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              TextField(
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                      label: Text(
+                                                                        "Input Jadwal",
                                                                       ),
-                                                                  child: TextButton.icon(
-                                                                    onPressed: () async {
-                                                                      var time = await showTimePicker(
-                                                                        context:
-                                                                            context,
-                                                                        initialTime:
-                                                                            TimeOfDay.now(),
-                                                                      );
-                                                                      if (time !=
-                                                                          null) {
-                                                                        setState(() {
-                                                                          timeIspicked =
-                                                                              true;
-                                                                          selectedTime =
-                                                                              "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
-                                                                        });
-                                                                      }
-                                                                    },
-                                                                    label: Text(
-                                                                      "Pilih Waktu",
                                                                     ),
-                                                                    icon: Icon(
-                                                                      Icons
-                                                                          .timer,
+                                                                controller:
+                                                                    newSchedule,
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Transform.translate(
+                                                                    offset:
+                                                                        Offset(
+                                                                          -17,
+                                                                          0,
+                                                                        ),
+                                                                    child: TextButton.icon(
+                                                                      onPressed: () async {
+                                                                        var time = await showTimePicker(
+                                                                          context:
+                                                                              context,
+                                                                          initialTime:
+                                                                              TimeOfDay.now(),
+                                                                        );
+                                                                        if (time !=
+                                                                            null) {
+                                                                          setState(() {
+                                                                            timeIspicked =
+                                                                                true;
+                                                                            selectedTime =
+                                                                                "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
+                                                                          });
+                                                                        }
+                                                                      },
+                                                                      label: Text(
+                                                                        "Pilih Waktu",
+                                                                      ),
+                                                                      icon: Icon(
+                                                                        Icons
+                                                                            .timer,
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                                timeIspicked
-                                                                    ? Text(
-                                                                      selectedTime,
-                                                                    )
-                                                                    : Text(""),
-                                                              ],
-                                                            ),
-                                                          ],
+                                                                  timeIspicked
+                                                                      ? Text(
+                                                                        selectedTime,
+                                                                      )
+                                                                      : Text(
+                                                                        "",
+                                                                      ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                              context,
-                                                            );
-                                                          },
-                                                          child: Text("Batal"),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            if (newSchedule
-                                                                    .text
-                                                                    .isNotEmpty &&
-                                                                timeIspicked) {
-                                                              scheduleProvider.editSchedule(
-                                                                index,
-                                                                widget.day,
-                                                                ScheduleItem(
-                                                                  time:
-                                                                      selectedTime,
-                                                                  title:
-                                                                      newSchedule
-                                                                          .text,
-                                                                  isEnabled:
-                                                                      true,
-                                                                ),
-                                                              );
-                                                              newSchedule
-                                                                  .clear();
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () {
                                                               Navigator.pop(
                                                                 context,
                                                               );
-                                                            }
-                                                          },
-                                                          child: Text("Edit"),
-                                                        ),
-                                                      ],
-                                                    ).animate().fadeIn(duration: 300.ms).scaleXY(begin: 0.8, end: 1.0);
-                                                  },
-                                                );
-                                              },
-                                            );
-                                          },
-                                          icon: Icon(Icons.edit, size: 14),
+                                                            },
+                                                            child: Text(
+                                                              "Batal",
+                                                            ),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              if (newSchedule
+                                                                      .text
+                                                                      .isNotEmpty &&
+                                                                  timeIspicked) {
+                                                                scheduleProvider.editSchedule(
+                                                                  index,
+                                                                  widget.day,
+                                                                  ScheduleItem(
+                                                                    time:
+                                                                        selectedTime,
+                                                                    title:
+                                                                        newSchedule
+                                                                            .text,
+                                                                    isEnabled:
+                                                                        true,
+                                                                  ),
+                                                                );
+                                                                newSchedule
+                                                                    .clear();
+                                                                Navigator.pop(
+                                                                  context,
+                                                                );
+                                                              }
+                                                            },
+                                                            child: Text("Edit"),
+                                                          ),
+                                                        ],
+                                                      ).animate().fadeIn(duration: 300.ms).scaleXY(begin: 0.8, end: 1.0);
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            icon: Icon(Icons.edit, size: 14),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                                : Icon(Icons.done, color: Colors.grey[400])),
-                    onLongPress: () {
-                      setState(() {
-                        selectView = true;
-                        item.isSelected = true;
-                      });
-                    },
-                    onTap: () {
-                      if (selectView) {
+                                      ],
+                                    ),
+                                  )
+                                  : Icon(Icons.done, color: Colors.grey[400])),
+                      onLongPress: () {
                         setState(() {
-                          item.isSelected = !item.isSelected;
+                          selectView = true;
+                          item.isSelected = true;
                         });
-                      }
-                    },
+                      },
+                      onTap: () {
+                        if (selectView) {
+                          setState(() {
+                            item.isSelected = !item.isSelected;
+                          });
+                        }
+                      },
+                    ),
                   );
                 },
               ),

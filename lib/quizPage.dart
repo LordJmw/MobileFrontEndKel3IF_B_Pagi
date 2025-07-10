@@ -49,7 +49,17 @@ class _QuizPageState extends State<QuizPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.clear, size: 50, color: Colors.grey[400]),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+              (route) => false, //supaya semua rute sebelum dihapus
+            );
+          },
+          icon: Icon(Icons.clear, size: 50, color: Colors.grey[400]),
+          padding: EdgeInsets.zero,
+        ),
         title: LinearProgressIndicator(
           value: progress,
           minHeight: 18,

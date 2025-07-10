@@ -20,26 +20,235 @@ class _HomeContentState extends State<HomeContent> {
       "Tenses": ["Simple Present", "Simple Past"],
     },
     {
-      "title": "Seninku",
+      "title": "Alam Sekitarku",
       "Tenses": ["Simple Present", "Simple Past"],
     },
     {
-      "title": "Halo Nama Saya ...",
+      "title": "Di Pantai",
       "Tenses": ["Simple Present", "Simple Past"],
     },
     {
-      "title": "Di Taman",
+      "title": "Aktivitas di Pantai",
       "Tenses": ["Simple Present", "Simple Past", "Simple Present Future"],
     },
     {
-      "title": "Saya Suka Makan ...",
+      "title": "Cita Cita ku",
       "Tenses": ["Simple Present", "Simple Past", "Simple Present Future"],
     },
   ];
 
-  final QuizUnit quizUnit = QuizUnit(
-    title: "Halo Nama Saya...",
-    category: ["Simple Present", "Simple Past", "Self-Introduced"],
+  final List<QuizUnit> quizzes = [
+    QuizUnit(
+      title: "Bahasa Inggris Dasar",
+      category: ["Vocabulary", "Grammar"],
+      questions: [
+        QuestionData(
+          type: QuestionType.textfield,
+          data: {
+            'image':
+                'https://png.pngtree.com/png-clipart/20190925/original/pngtree-rabbit_cartoon-png-image_4992696.jpg',
+            'label': 'Kelinci',
+            'correctAnswer': 'rabbit',
+          },
+        ),
+        QuestionData(
+          type: QuestionType.arrangingWords,
+          data: {
+            'question': 'saya suka burger',
+            'words': ['I', 'You', 'like', 'soda', 'burger', 'always'],
+            'answers': 'i like burger',
+          },
+        ),
+        QuestionData(
+          type: QuestionType.matching,
+          data: {
+            'pairs': {
+              'i': 'saya',
+              'you': 'kamu',
+              'like': 'suka',
+              'play': 'bermain',
+              'sunday': 'minggu',
+            },
+          },
+        ),
+      ],
+    ),
+    QuizUnit(
+      title: "Bahasa Inggris Dasar",
+      category: ["Vocabulary", "Grammar"],
+      questions: [
+        QuestionData(
+          type: QuestionType.textfield,
+          data: {
+            'image':
+                'https://www.shutterstock.com/image-vector/vector-illustration-cute-baby-elephant-600nw-2245334003.jpg',
+            'label': 'Gajah',
+            'correctAnswer': 'elephant',
+          },
+        ),
+        QuestionData(
+          type: QuestionType.arrangingWords,
+          data: {
+            'question': 'saya sedang minum teh',
+            'words': ['I', 'drink', 'drinking', 'soda', 'tea', 'am'],
+            'answers': 'i am drinking tea',
+          },
+        ),
+        QuestionData(
+          type: QuestionType.matching,
+          data: {
+            'pairs': {
+              'tree': 'pohon',
+              'forest': 'hutan',
+              'river': 'sungai',
+              'sea': 'laut',
+              'boat': 'kapal',
+            },
+          },
+        ),
+      ],
+    ),
+    QuizUnit(
+      title: "Bahasa Inggris Dasar",
+      category: ["Vocabulary", "Grammar"],
+      questions: [
+        QuestionData(
+          type: QuestionType.textfield,
+          data: {
+            'image':
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQb7HVY9NRDSZI9OhgolM9omjXH4h9EbWclw&s',
+            'label': 'Buaya',
+            'correctAnswer': 'crocodile',
+          },
+        ),
+        QuestionData(
+          type: QuestionType.arrangingWords,
+          data: {
+            'question': 'saya melihat dia(laki-laki) kemarin',
+            'words': ['I', 'see', 'him', 'saw', 'her', 'yesterday'],
+            'answers': 'i saw him yesterday',
+          },
+        ),
+        QuestionData(
+          type: QuestionType.matching,
+          data: {
+            'pairs': {
+              'sand': 'pasir',
+              'coconut': 'kelapa',
+              'beach': 'pantai',
+              'reef': 'terumbu karang',
+              'dive': 'menyelam',
+            },
+          },
+        ),
+      ],
+    ),
+    QuizUnit(
+      title: "Bahasa Inggris Dasar",
+      category: ["Vocabulary", "Grammar"],
+      questions: [
+        QuestionData(
+          type: QuestionType.textfield,
+          data: {
+            'image':
+                'https://images.vexels.com/media/users/3/151669/isolated/preview/cffc3cd93f88d0f459a0f069810dd2b5-deer-animal-cartoon.png',
+            'label': 'Rusa',
+            'correctAnswer': 'deer',
+          },
+        ),
+        QuestionData(
+          type: QuestionType.arrangingWords,
+          data: {
+            'question': 'saya akan minum',
+            'words': ['I', 'am', 'will', 'drink', 'was', 'drank'],
+            'answers': 'i will drink',
+          },
+        ),
+        QuestionData(
+          type: QuestionType.matching,
+          data: {
+            'pairs': {
+              'fishing': 'memancing',
+              'swimming': 'berenang',
+              'sand castle': 'istana pasir',
+              'picnic': 'piknik',
+              'fly a kite': 'menerbangkan layang layang',
+            },
+          },
+        ),
+      ],
+    ),
+    QuizUnit(
+      title: "Bahasa Inggris Dasar",
+      category: ["Vocabulary", "Grammar"],
+      questions: [
+        QuestionData(
+          type: QuestionType.textfield,
+          data: {
+            'image':
+                'https://www.shutterstock.com/image-vector/cute-duck-green-head-standing-600nw-2314343477.jpg',
+            'label': 'Bebek',
+            'correctAnswer': 'duck',
+          },
+        ),
+        QuestionData(
+          type: QuestionType.arrangingWords,
+          data: {
+            'question': 'saya akan menjadi seorang koki',
+            'words': ['I', 'am', 'be', 'a', 'will', 'chef'],
+            'answers': 'i will be a chef',
+          },
+        ),
+        QuestionData(
+          type: QuestionType.matching,
+          data: {
+            'pairs': {
+              'pemadam kebakaran': 'firefighter',
+              'koki': 'chef',
+              'polisi': 'police',
+              'pengacara': 'lawyer',
+              'dokter': 'doctor',
+            },
+          },
+        ),
+      ],
+    ),
+  ];
+
+  final quiz = QuizUnit(
+    title: "Bahasa Inggris Dasar",
+    category: ["Vocabulary", "Grammar"],
+    questions: [
+      QuestionData(
+        type: QuestionType.textfield,
+        data: {
+          'image':
+              'https://png.pngtree.com/png-clipart/20190925/original/pngtree-rabbit_cartoon-png-image_4992696.jpg',
+          'label': 'Kelinci',
+          'correctAnswer': 'rabbit',
+        },
+      ),
+      QuestionData(
+        type: QuestionType.arrangingWords,
+        data: {
+          'question': 'saya suka burger',
+          'words': ['I', 'You', 'like', 'soda', 'burger', 'always'],
+          'answers': 'i like burger',
+        },
+      ),
+      QuestionData(
+        type: QuestionType.matching,
+        data: {
+          'pairs': {
+            'i': 'saya',
+            'you': 'kamu',
+            'like': 'suka',
+            'play': 'bermain',
+            'sunday': 'minggu',
+          },
+        },
+      ),
+    ],
   );
 
   @override
@@ -81,73 +290,6 @@ class _HomeContentState extends State<HomeContent> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   spacing: 5,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     Expanded(
-                    //       flex: 1,
-                    //       child: Padding(
-                    //         padding: EdgeInsets.all(10),
-                    //         child: Text(
-                    //           "Engliboo",
-                    //           style: TextStyle(
-                    //             color: const Color.fromARGB(255, 94, 175, 241),
-                    //             fontSize: 20,
-                    //             fontWeight: FontWeight.bold,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     Expanded(
-                    //       flex: 3,
-                    //       child: Padding(
-                    //         padding: EdgeInsets.all(10),
-                    //         child: Row(
-                    //           mainAxisAlignment: MainAxisAlignment.end,
-                    //           children: [
-                    //             Padding(
-                    //               padding: EdgeInsets.only(right: 10),
-                    //               child: Text(
-                    //                 "Level 1",
-                    //                 style: TextStyle(
-                    //                   color: Colors.black,
-                    //                   fontWeight: FontWeight.bold,
-                    //                   fontSize: 20,
-                    //                 ),
-                    //               ),
-                    //             ),
-
-                    //             Container(
-                    //               width:
-                    //                   MediaQuery.of(context).size.width * 0.15,
-                    //               height: 20,
-                    //               child: LinearProgressIndicator(
-                    //                 borderRadius: BorderRadius.all(
-                    //                   Radius.circular(40),
-                    //                 ),
-                    //                 color: const Color.fromARGB(
-                    //                   255,
-                    //                   217,
-                    //                   217,
-                    //                   217,
-                    //                 ),
-                    //                 value: 0.2,
-                    //                 valueColor: AlwaysStoppedAnimation(
-                    //                   const Color.fromARGB(255, 51, 155, 240),
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //             TextButton.icon(
-                    //               onPressed: null,
-                    //               label: Text("5"),
-                    //               icon: Icon(Icons.favorite, color: Colors.red),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                     Padding(
                       padding: EdgeInsets.all(0),
                       child: Container(
@@ -467,7 +609,7 @@ class _HomeContentState extends State<HomeContent> {
                                                           BuildContext context,
                                                         ) => QuizPage(
                                                           quizStage:
-                                                              quizUnit
+                                                              quizzes[index - 1]
                                                                   .stages[0],
                                                         ),
                                                   ),

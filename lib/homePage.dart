@@ -34,8 +34,39 @@ class _HomePageState extends State<HomePage> {
   // }
 
   QuizUnit quizUnit = QuizUnit(
-    title: "Halo Nama Saya...",
-    category: ["Simple Present", "Simple Past", "Self-Introduced"],
+    title: "Bahasa Inggris Dasar",
+    category: ["Vocabulary", "Grammar"],
+    questions: [
+      QuestionData(
+        type: QuestionType.textfield,
+        data: {
+          'image':
+              'https://png.pngtree.com/png-clipart/20190925/original/pngtree-rabbit_cartoon-png-image_4992696.jpg',
+          'label': 'Kelinci',
+          'correctAnswer': 'rabbit',
+        },
+      ),
+      QuestionData(
+        type: QuestionType.arrangingWords,
+        data: {
+          'question': 'saya suka burger',
+          'words': ['I', 'You', 'like', 'soda', 'burger', 'always'],
+          'answers': 'i like burger',
+        },
+      ),
+      QuestionData(
+        type: QuestionType.matching,
+        data: {
+          'pairs': {
+            'i': 'saya',
+            'you': 'kamu',
+            'like': 'suka',
+            'play': 'bermain',
+            'sunday': 'minggu',
+          },
+        },
+      ),
+    ],
   );
 
   Map<String, Widget> pages = {

@@ -98,7 +98,7 @@ class _ArrangingWordsState extends State<ArrangingWords> {
                   child: Container(
                     alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width * 0.4,
-                    height: MediaQuery.of(context).size.height * 0.1,
+                    height: MediaQuery.of(context).size.height * 0.2,
                     decoration: BoxDecoration(
                       border: Border.all(width: 2, color: Colors.black),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
