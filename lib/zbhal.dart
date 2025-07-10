@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tugas2/timer_matching.dart';
 
 class Golda extends StatefulWidget {
   const Golda({super.key});
@@ -98,7 +99,32 @@ class _GoldaState extends State<Golda> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => TimerMatching(
+                                  pairs: {
+                                    "open": "buka",
+                                    "apple": "apel",
+                                    "animal": "hewan",
+                                    "book": "buku",
+                                    "brain": "otak",
+                                    "chicken": "ayam",
+                                    "worm": "cacing",
+                                    "table": "meja",
+                                    "new": "baru",
+                                    "store": "toko",
+                                    "don't worry": "jangan khawatir",
+                                    "snake": "ular",
+                                    "three": "tiga",
+                                    "smart": "pintar",
+                                  },
+                                ),
+                          ),
+                        );
+                      },
                       child: Text("MULAI LATIHAN +20 XP"),
                     ),
                   ),
