@@ -136,7 +136,7 @@ class _TimerMatchingState extends State<TimerMatching> {
     presetMillisecond: StopWatchTimer.getMilliSecFromSecond(90),
   );
   bool isCompleted = false;
-  late int secondTime;
+  int secondTime = 0;
   bool _show = false;
 
   @override
@@ -187,6 +187,7 @@ class _TimerMatchingState extends State<TimerMatching> {
 
   @override
   Widget build(BuildContext context) {
+    bool screenVertSize = MediaQuery.of(context).size.height <= 644;
     return Scaffold(
       appBar:
           _show
@@ -220,69 +221,142 @@ class _TimerMatchingState extends State<TimerMatching> {
                   ),
                 ],
               ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
-        child: Center(
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "Pilih pasangan yang cocok",
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontFamily: "Jellee",
-                    color: Color.fromRGBO(75, 75, 75, 1),
+      body:
+          screenVertSize
+              ? SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Pilih pasangan yang cocok",
+                            style: TextStyle(
+                              fontSize: 26,
+                              fontFamily: "Jellee",
+                              color: Color.fromRGBO(75, 75, 75, 1),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: 20),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            for (int i = 0; i < 5; i++)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 28),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: PressEffect(
+                                        offset: 4,
+                                        child:
+                                            (toggle) => MatchingTiles(
+                                              notifier: notifier,
+                                              init_tileValue:
+                                                  questionPlaceholder[i],
+                                              isQuestion: true,
+                                              pressEffectController: toggle,
+                                            ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 80),
+
+                                    Expanded(
+                                      child: PressEffect(
+                                        offset: 4,
+                                        child:
+                                            (toggle) => MatchingTiles(
+                                              notifier: notifier,
+                                              init_tileValue:
+                                                  answerPlaceholder[i],
+                                              isQuestion: false,
+                                              pressEffectController: toggle,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+              )
+              : Padding(
+                padding: const EdgeInsets.fromLTRB(14, 0, 14, 0),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "Pilih pasangan yang cocok",
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontFamily: "Jellee",
+                            color: Color.fromRGBO(75, 75, 75, 1),
+                          ),
+                        ),
+                      ),
 
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (int i = 0; i < 5; i++)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 28),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Expanded(
-                              child: PressEffect(
-                                offset: 4,
-                                child:
-                                    (toggle) => MatchingTiles(
-                                      notifier: notifier,
-                                      init_tileValue: questionPlaceholder[i],
-                                      isQuestion: true,
-                                      pressEffectController: toggle,
+                            for (int i = 0; i < 5; i++)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 28),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: PressEffect(
+                                        offset: 4,
+                                        child:
+                                            (toggle) => MatchingTiles(
+                                              notifier: notifier,
+                                              init_tileValue:
+                                                  questionPlaceholder[i],
+                                              isQuestion: true,
+                                              pressEffectController: toggle,
+                                            ),
+                                      ),
                                     ),
-                              ),
-                            ),
-                            SizedBox(width: 80),
+                                    SizedBox(width: 80),
 
-                            Expanded(
-                              child: PressEffect(
-                                offset: 4,
-                                child:
-                                    (toggle) => MatchingTiles(
-                                      notifier: notifier,
-                                      init_tileValue: answerPlaceholder[i],
-                                      isQuestion: false,
-                                      pressEffectController: toggle,
+                                    Expanded(
+                                      child: PressEffect(
+                                        offset: 4,
+                                        child:
+                                            (toggle) => MatchingTiles(
+                                              notifier: notifier,
+                                              init_tileValue:
+                                                  answerPlaceholder[i],
+                                              isQuestion: false,
+                                              pressEffectController: toggle,
+                                            ),
+                                      ),
                                     ),
+                                  ],
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
       bottomSheet:
           _show
               ? Container(

@@ -58,11 +58,14 @@ class _TextfieldState extends State<Textfield> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isLargeScreen = screenHeight > 700;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(14.0),
+            padding: EdgeInsets.all(isLargeScreen ? 24.0 : 14.0),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,14 +82,27 @@ class _TextfieldState extends State<Textfield> {
                     ),
                   ),
 
+                  SizedBox(height: isLargeScreen ? 40 : 20),
+
                   Container(
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(isLargeScreen ? 30 : 20),
                     decoration: BoxDecoration(
                       border: Border.all(width: 4, color: Color(0xFFE5E5E5)),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Column(children: [widget.image, Text(widget.label)]),
+                    child: Column(
+                      children: [
+                        widget.image,
+                        SizedBox(height: isLargeScreen ? 16 : 8),
+                        Text(
+                          widget.label,
+                          style: TextStyle(fontSize: isLargeScreen ? 20 : 16),
+                        ),
+                      ],
+                    ),
                   ),
+
+                  SizedBox(height: isLargeScreen ? 40 : 20),
 
                   TextField(
                     decoration: InputDecoration(
@@ -102,6 +118,10 @@ class _TextfieldState extends State<Textfield> {
                       ),
                       filled: true,
                       fillColor: Color.fromRGBO(247, 247, 247, 1),
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: isLargeScreen ? 20 : 16,
+                        horizontal: 16,
+                      ),
                     ),
                     controller: answer,
                     onChanged: (value) {
@@ -109,10 +129,13 @@ class _TextfieldState extends State<Textfield> {
                         isActive = true;
                       });
                     },
+                    style: TextStyle(fontSize: isLargeScreen ? 18 : 16),
                   ),
 
+                  SizedBox(height: isLargeScreen ? 40 : 20),
+
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 28),
+                    padding: EdgeInsets.only(bottom: isLargeScreen ? 40 : 28),
                     child: PressEffect(
                       offset: 6,
                       child:
