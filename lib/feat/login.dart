@@ -10,119 +10,117 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Selamat Datang Kembali!",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "Poppins",
-                  color: Colors.black,
-                  decoration: TextDecoration.none,
-                ),
-              ),
-              Text(
-                'Masukkan data akun anda',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.black,
-                  fontFamily: "Poppins",
-                ),
-              ),
-              SizedBox(height: 20),
-              SizedBox(
-                width: 290,
-                height: 40,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0.5, color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.blue, width: 2.5),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              SizedBox(
-                width: 290,
-                height: 40,
-                child: TextFormField(
-                  obscureText: _obscureText,
-                  decoration: InputDecoration(
-                    labelText: 'Kata Sandi',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0.5, color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.blue, width: 2.5),
-                    ),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                      icon: Icon(
-                        _obscureText ? Icons.visibility_off : Icons.visibility,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 290,
+                  height: 40,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      errorStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                        height: 0.6,
                       ),
-                      color: Colors.grey,
+                      contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 15),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 0.5, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: Colors.blue, width: 0.5),
+                      ),
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Email tidak boleh kosong';
+                      } else if (!value.contains('@')) {
+                        return 'mohon gunakan alamat email yang valid';
+                      }
+                      return null;
+                    },
                   ),
                 ),
-              ),
-              SizedBox(height: 20),
-              SizedBox(
-                height: 50,
-                width: 290,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Colors.lightBlue,
-                    elevation: 10,
-                    shadowColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                SizedBox(height: 20),
+
+                // Password
+                SizedBox(
+                  width: 290,
+                  height: 40,
+                  child: TextFormField(
+                    obscureText: _obscureText,
+                    decoration: InputDecoration(
+                      labelText: 'Kata Sandi',
+                      errorStyle: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                        height: 0.6,
+                      ),
+                      contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 15),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(width: 0.5, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: Colors.blue, width: 0.5),
+                      ),
                     ),
-                  ),
-                  child: TextButton(
-                    onPressed: () async {
-                      EasyLoading.show(status: 'Loading...');
-                      await Future.delayed(Duration(seconds: 2));
-                      EasyLoading.showSuccess(
-                        'Verified!',
-                        duration: Duration(seconds: 1),
-                      );
-                      await Future.delayed(Duration(seconds: 1));
-                      EasyLoading.dismiss();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-                        ),
-                      );
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Kata sandi tidak boleh kosong';
+                      }
+                      return null;
                     },
+                  ),
+                ),
+                SizedBox(height: 20),
+                SizedBox(height: 20),
+
+                // Tombol MASUK
+                SizedBox(
+                  height: 50,
+                  width: 290,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        EasyLoading.show(status: 'Loading...');
+                        await Future.delayed(Duration(seconds: 2));
+                        EasyLoading.showSuccess('Verified!',
+                            duration: Duration(seconds: 1));
+                        await Future.delayed(Duration(seconds: 1));
+                        EasyLoading.dismiss();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const HomePage()),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: Colors.lightBlue,
+                      elevation: 10,
+                      shadowColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
                     child: Text(
                       'MASUK',
                       style: TextStyle(
@@ -133,7 +131,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-              ),
+
+
               SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -258,8 +257,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ],
-              ),
-            ],
+              ), 
+              
+            ])
           ),
         ),
       ),
