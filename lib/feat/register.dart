@@ -184,7 +184,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ? null
                                 : "Cek Jika Sudah Membaca Ketentuan dan Kebijakan Privasi";
                       });
-                      if (_formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate() &&
+                          _isChecked == true) {
                         EasyLoading.show(status: 'Loading...');
                         await Future.delayed(Duration(seconds: 2));
                         EasyLoading.dismiss();
